@@ -1,0 +1,4 @@
+
+const parse() => ({});
+
+export { parse };
