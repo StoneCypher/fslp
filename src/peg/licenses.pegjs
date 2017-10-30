@@ -1,5 +1,5 @@
 
-LicenseNotation
+LicenseNotation "license"
   = 'MIT'                    { return { term: 'License', value: 'MIT',           known: true,  viral: false,     location: location() }; }
   / 'BSD 2-clause'           { return { term: 'License', value: 'BSD 2-clause',  known: true,  viral: false,     location: location() }; }
   / 'BSD 3-clause'           { return { term: 'License', value: 'BSD 3-clause',  known: true,  viral: false,     location: location() }; }

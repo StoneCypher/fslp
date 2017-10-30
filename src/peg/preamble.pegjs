@@ -10,3 +10,5 @@ Document
   / SemVer
   / NonNegNumber
   / LicenseNotation
+  / GraphLayout
+  / GvizLayoutType

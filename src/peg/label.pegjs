@@ -62,3 +62,10 @@ _Atom "atom"
 _Label "label"
   = atom:_Atom
   / string:_String
+
+_LabelList
+  = "[" _WS? names:(_Label _WS?)* "]" { return names.map(i => i[0]); }
+
+_LabelOrLabelList
+  = _LabelList
+  / _Label

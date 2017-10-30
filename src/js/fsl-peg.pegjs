@@ -10,6 +10,8 @@ Document
   / SemVer
   / NonNegNumber
   / LicenseNotation
+  / GraphLayout
+  / GvizLayoutType
 
 
 _LineTerminator
@@ -37,6 +39,16 @@ _WS "whitespace"
   = _BlockComment _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
   / _LineComment  _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
   / [ \t\r\n\v]+  _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
+
+
+GvizLayoutType "gviz layout type"
+  = "dot"   { return { term: "Layout Type", value: "dot",   location: location() }; }
+  / "circo" { return { term: "Layout Type", value: "circo", location: location() }; }
+  / "fdp"   { return { term: "Layout Type", value: "fdp",   location: location() }; }
+  / "neato" { return { term: "Layout Type", value: "neato", location: location() }; }
+
+GraphLayout "graph layout"
+  = "graph_layout" _WS? ":" _WS? value:GvizLayoutType _WS? ";" _WS? { return { term: "Graph Layout", value }; }
 
 
 _Char
@@ -103,8 +115,15 @@ _Label "label"
   = atom:_Atom
   / string:_String
 
+_LabelList
+  = "[" _WS? names:(_Label _WS?)* "]" { return names.map(i => i[0]); }
 
-LicenseNotation
+_LabelOrLabelList
+  = _LabelList
+  / _Label
+
+
+LicenseNotation "license"
   = 'MIT'                    { return { term: 'License', value: 'MIT',           known: true,  viral: false,     location: location() }; }
   / 'BSD 2-clause'           { return { term: 'License', value: 'BSD 2-clause',  known: true,  viral: false,     location: location() }; }
   / 'BSD 3-clause'           { return { term: 'License', value: 'BSD 3-clause',  known: true,  viral: false,     location: location() }; }
@@ -128,7 +147,7 @@ _DecimalDigit
 _NonZeroDigit
   = [1-9]
 
-IntegerLiteral
+IntegerLiteral "integer literal"
   = "0"                          { return { term: 'Number', value: 0,                  location: location() }; }
   / _NonZeroDigit _DecimalDigit* { return { term: 'Number', value: parseFloat(text()), location: location() }; }
 
