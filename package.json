@@ -1,0 +1,27 @@
+{
+  "name": "fslp",
+  "version": "0.1.0",
+  "description": "Finite State Language reference parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StoneCypher/fslp.git"
+  },
+  "keywords": [
+    "fsl",
+    "fslp",
+    "parser",
+    "fsl-parser",
+    "fsl_parser",
+    "fslparser"
+  ],
+  "author": "John Haugeland <stonecypher@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StoneCypher/fslp/issues"
+  },
+  "homepage": "https://github.com/StoneCypher/fslp#readme"
+}
