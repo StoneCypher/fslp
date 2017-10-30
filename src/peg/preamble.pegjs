@@ -2,3 +2,4 @@
 Document
   = Arrow
   / Shape
+  / NamedColor

@@ -1,5 +1,5 @@
 
-Shape
+Shape "shape"
  = "box"             { return { term: 'Shape', value: 'box',             location: location() }; }
  / "polygon"         { return { term: 'Shape', value: 'polygon',         location: location() }; }
  / "ellipse"         { return { term: 'Shape', value: 'ellipse',         location: location() }; }

@@ -1,12 +1,12 @@
 {
   "name": "fslp",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
     "test": "nyc ava src/js/tests/*.js",
     "test_verbose": "ava src/js/tests/*.js -v",
-    "make_peg": "rm -f src/js/fsl-peg.pegjs && concat -o src/js/fsl-peg.pegjs src/peg/preamble.pegjs src/peg/arrow.pegjs src/peg/shape.pegjs"
+    "make_peg": "rm -f src/js/fsl-peg.pegjs && concat -o src/js/fsl-peg.pegjs src/peg/preamble.pegjs src/peg/named_color.pegjs src/peg/arrow.pegjs src/peg/shape.pegjs"
   },
   "repository": {
     "type": "git",
