@@ -1,0 +1,5 @@
+{
+  "plugins"    : ["transform-flow-strip-types"],
+  "presets"    : ["env"],
+  "sourceMaps" : "inline"
+}
