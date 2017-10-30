@@ -1,11 +1,12 @@
 {
   "name": "fslp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
     "test": "nyc ava src/js/tests/*.js",
-    "test_verbose": "ava src/js/tests/*.js -v"
+    "test_verbose": "ava src/js/tests/*.js -v",
+    "make_peg": "rm -f src/js/fsl-peg.pegjs && concat -o src/js/fsl-peg.pegjs src/peg/preamble.pegjs src/peg/arrow.pegjs src/peg/shape.pegjs"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
+    "concat": "^1.0.3",
     "eslint": "^4.10.0",
     "eslint-config-stonecypher": "^1.15.7",
     "eslint-plugin-ava": "^4.2.2",
@@ -45,5 +47,6 @@
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-unicorn": "^2.1.2",
     "nyc": "^11.2.1"
-  }
+  },
+  "dependencies": {}
 }
