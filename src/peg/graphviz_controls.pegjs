@@ -6,4 +6,4 @@ GvizLayoutType "gviz layout type"
   / "neato" { return { term: "Layout Type", value: "neato", location: location() }; }
 
 GraphLayout "graph layout"
-  = "graph_layout" _WS? ":" _WS? value:GvizLayoutType _WS? ";" _WS? { return { term: "Graph Layout", value }; }
+  = "graph_layout" _WS? ":" _WS? value:GvizLayoutType _WS? ";" _WS? { return { term: "Graph Layout", value, location: location() }; }

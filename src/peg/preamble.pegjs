@@ -12,3 +12,5 @@ Document
   / LicenseNotation
   / GraphLayout
   / GvizLayoutType
+  / URL
+  / MachineAttribute
