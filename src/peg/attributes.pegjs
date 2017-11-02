@@ -1,17 +1,43 @@
 
-MachineAuthor
-  = "machine_author" _WS? ":" _WS? author:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_author", value: author, location: location() }; }
+LabelOrListMachineAttributes
+  = "machine_author"
+  / "machine_contributor"
+  / "machine_comment"
+  / "machine_reference"
+
+MachineAttribute_LabelOrList
+  = term:LabelOrListMachineAttributes _WS? ":" _WS? value:_LabelOrLabelList _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
 
 
-MachineContributor
-  = "machine_contributor" _WS? ":" _WS? contributor:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_contributor", value: contributor, location: location() }; }
 
 
-MachineComment
-  = "machine_comment" _WS? ":" _WS? comment:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_comment", value: comment, location: location() }; }
+
+LabelMachineAttributes
+  = "machine_name"
+  / "machine_language"     // todo this is wrong, this should be 639-2 or whatever it is
+
+MachineAttribute_Label
+  = term:LabelMachineAttributes _WS? ":" _WS? value:_Label _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
+
+
+
+
+
+SemverMachineAttributes
+  = "machine_version"
+  / "fsl_version"
+
+MachineAttribute_Semver
+  = term:SemverMachineAttributes _WS? ":" _WS? value:SemVer _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
+
+
+
 
 
 MachineDefinition
@@ -19,46 +45,17 @@ MachineDefinition
     return { term: "machine_definition", value: definition, location: location() }; }
 
 
-MachineName
-  = "machine_name" _WS? ":" _WS? name:_Label _WS? ";" _WS? {
-    return { term: "machine_name", value: name, location: location() }; }
-
-
-MachineReference
-  = "machine_reference" _WS? ":" _WS? reference:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_reference", value: reference, location: location() }; }
-
-
-MachineVersion
-  = "machine_version" _WS? ":" _WS? version:SemVer _WS? ";" _WS? {
-    return { term: "machine_version", value: version, location: location() }; }
-
-
 MachineLicense
   = "machine_license" _WS? ":" _WS? license:LicenseNotation _WS? ";" _WS? {
     return { term: "machine_license", value: license, location: location() }; }
-
-
-MachineLanguage
-  = "machine_language" _WS? ":" _WS? language:_Label _WS? ";" _WS? {
-    return { term: "machine_language", value: language, location: location() }; }
-
-
-FslVersion
-  = "fsl_version" _WS? ":" _WS? fsl_version:SemVer _WS? ";" _WS? {
-    return { term: "fsl_version", value: fsl_version, location: location() }; }
 
 
 
 
 
 MachineAttribute "machine attribute"
-  = FslVersion
-  / MachineName
-  / MachineAuthor
-  / MachineContributor
-  / MachineComment
-  / MachineDefinition
-  / MachineVersion
+  = MachineDefinition
   / MachineLicense
-  / MachineLanguage
+  / MachineAttribute_LabelOrList
+  / MachineAttribute_Label
+  / MachineAttribute_Semver
