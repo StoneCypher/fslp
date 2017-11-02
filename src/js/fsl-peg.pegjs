@@ -1,4 +1,11 @@
 
+{
+  function signflip({ term, value, location }) {
+    return { term, value: value * -1, location };
+  }
+}
+
+
 Input
   = _WS? d:Document { return d; }
 
@@ -14,21 +21,49 @@ Document
   / GvizLayoutType
   / URL
   / MachineAttribute
+  / Stripe
+  / Cycle
 
 
-MachineAuthor
-  = "machine_author" _WS? ":" _WS? author:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_author", value: author, location: location() }; }
+LabelOrListMachineAttributes
+  = "machine_author"
+  / "machine_contributor"
+  / "machine_comment"
+  / "machine_reference"
+
+MachineAttribute_LabelOrList
+  = term:LabelOrListMachineAttributes _WS? ":" _WS? value:_LabelOrLabelList _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
 
 
-MachineContributor
-  = "machine_contributor" _WS? ":" _WS? contributor:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_contributor", value: contributor, location: location() }; }
 
 
-MachineComment
-  = "machine_comment" _WS? ":" _WS? comment:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_comment", value: comment, location: location() }; }
+
+LabelMachineAttributes
+  = "machine_name"
+  / "machine_language"     // todo this is wrong, this should be 639-2 or whatever it is
+
+MachineAttribute_Label
+  = term:LabelMachineAttributes _WS? ":" _WS? value:_Label _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
+
+
+
+
+
+SemverMachineAttributes
+  = "machine_version"
+  / "fsl_version"
+
+MachineAttribute_Semver
+  = term:SemverMachineAttributes _WS? ":" _WS? value:SemVer _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
+
+
+
 
 
 MachineDefinition
@@ -36,49 +71,57 @@ MachineDefinition
     return { term: "machine_definition", value: definition, location: location() }; }
 
 
-MachineName
-  = "machine_name" _WS? ":" _WS? name:_Label _WS? ";" _WS? {
-    return { term: "machine_name", value: name, location: location() }; }
-
-
-MachineReference
-  = "machine_reference" _WS? ":" _WS? reference:_LabelOrLabelList _WS? ";" _WS? {
-    return { term: "machine_reference", value: reference, location: location() }; }
-
-
-MachineVersion
-  = "machine_version" _WS? ":" _WS? version:SemVer _WS? ";" _WS? {
-    return { term: "machine_version", value: version, location: location() }; }
-
-
 MachineLicense
   = "machine_license" _WS? ":" _WS? license:LicenseNotation _WS? ";" _WS? {
     return { term: "machine_license", value: license, location: location() }; }
-
-
-MachineLanguage
-  = "machine_language" _WS? ":" _WS? language:_Label _WS? ";" _WS? {
-    return { term: "machine_language", value: language, location: location() }; }
-
-
-FslVersion
-  = "fsl_version" _WS? ":" _WS? fsl_version:SemVer _WS? ";" _WS? {
-    return { term: "fsl_version", value: fsl_version, location: location() }; }
 
 
 
 
 
 MachineAttribute "machine attribute"
-  = FslVersion
-  / MachineName
-  / MachineAuthor
-  / MachineContributor
-  / MachineComment
-  / MachineDefinition
-  / MachineVersion
+  = MachineDefinition
   / MachineLicense
-  / MachineLanguage
+  / MachineAttribute_LabelOrList
+  / MachineAttribute_Label
+  / MachineAttribute_Semver
+
+
+// todo whargarbl these subexpr terms are currently ordered, and that's stupid
+// change this to be unordered
+
+Subexpr
+  = _WS? r_action : _ActionLabel?
+    _WS? r_prob   :  ArrowProbability?
+    _WS? l_desc   :  ArrowDesc?
+    _WS? arrow    :  Arrow
+    _WS? r_desc   :  ArrowDesc?
+    _WS? l_prob   :  ArrowProbability?
+    _WS? l_action : _ActionLabel?
+    _WS? label    :  ArrowTarget
+    _WS? tail     :  Subexpr? {
+
+      // this changed kind to key.  some breakage may result?
+      const base = { key: arrow, to: label };
+
+      if (tail && (tail !== [])) { base.se            = tail;         }
+      if (l_desc)                { base.l_desc        = l_desc;       }
+      if (r_desc)                { base.r_desc        = r_desc;       }
+      if (l_action)              { base.l_action      = l_action;     }
+      if (r_action)              { base.r_action      = r_action;     }
+      if (l_prob)                { base.l_probability = l_prob.value; }
+      if (r_prob)                { base.r_probability = r_prob.value; }
+
+      return base;
+
+    }
+
+
+
+Expr
+  = label:ArrowTarget se:Subexpr _WS? ';' _WS? {
+    return { key: 'transition', from: label, se: (se && (se !== []))? se : undefined };
+  }
 
 
 _LineTerminator
@@ -223,17 +266,17 @@ _DecimalDigit
 _NonZeroDigit
   = [1-9]
 
-IntegerLiteral "integer literal"
+NonNegIntegerLiteral "integer literal"
   = "0"                          { return { term: 'Number', value: 0,                  location: location() }; }
   / _NonZeroDigit _DecimalDigit* { return { term: 'Number', value: parseFloat(text()), location: location() }; }
 
 NonNegNumber "nonneg number"
-  = IntegerLiteral "." _DecimalDigit* _WS? { return { term: 'Number', value: parseFloat(text()), location: location() }; }
-  / IntegerLiteral                    _WS? { return { term: 'Number', value: parseFloat(text()), location: location() }; }
+  = NonNegIntegerLiteral "." _DecimalDigit* _WS? { return { term: 'Number', value: parseFloat(text()), location: location() }; }
+  / NonNegIntegerLiteral                    _WS? { return { term: 'Number', value: parseFloat(text()), location: location() }; }
 
 
 SemVer
-  = major:IntegerLiteral "." minor:IntegerLiteral "." patch:IntegerLiteral
+  = major:NonNegIntegerLiteral "." minor:NonNegIntegerLiteral "." patch:NonNegIntegerLiteral
   {
     const pmajor = parseInt(major.value, 10),
           pminor = parseInt(minor.value, 10),
@@ -691,64 +734,56 @@ MixedArrow "mixed arrow"
   = LightFatArrow / LightTildeArrow / FatLightArrow / FatTildeArrow / TildeLightArrow / TildeFatArrow
 
 
+ArrowItemKey
+  = "arc_label"
+  / "head_label"
+  / "tail_label"
+
+ArrowItem
+  = term:ArrowItemKey _WS? ":" _WS? value:_Label _WS? ";" _WS? { return { term, value }; }
+
+SingleEdgeColor "single edge color"
+  = _WS? "edge_color" _WS? ":" _WS? value:Color _WS? ";" _WS? { return {key:'single_edge_color', value:value}; }
+
+ArrowItems
+  = SingleEdgeColor
+  / ArrowItem+
+
+ArrowDesc
+  = "{" _WS? items:ArrowItems? _WS? "}" { return items; }
+
+ArrowProbability
+  = value:NonNegNumber "%" { return { key: 'arrow probability', value: value }; }
+
+
+
+ArrowTarget
+  = Stripe
+  / Cycle
+  / _LabelList
+  / _Label
+
+
+_ShapeList
+  = "box"           / "polygon"       / "ellipse"         / "oval"          / "circle"         / "point"
+  / "egg"           / "triangle"      / "plaintext"       / "plain"         / "diamond"        / "trapezium"
+  / "parallelogram" / "house"         / "pentagon"        / "hexagon"       / "septagon"       / "octagon"
+  / "doublecircle"  / "doubleoctagon" / "tripleoctagon"   / "invtriangle"   / "invtrapezium"   / "invhouse"
+  / "Mdiamond"      / "Msquare"       / "Mcircle"         / "rect"          / "rectangle"      / "square"
+  / "star"          / "none"          / "underline"       / "cylinder"      / "note"           / "tab"
+  / "folder"        / "box3d"         / "component"       / "promoter"      / "cds"            / "terminator"
+  / "utr"           / "primersite"    / "restrictionsite" / "fivepoverhang" / "threepoverhang" / "noverhang"
+  / "assembly"      / "signature"     / "insulator"       / "ribosite"      / "rnastab"        / "proteasesite"
+  / "proteinstab"   / "rpromoter"     / "rarrow"          / "larrow"        / "lpromoter"      / "record"
+
 Shape "shape"
- = "box"             { return { term: 'Shape', value: 'box',             location: location() }; }
- / "polygon"         { return { term: 'Shape', value: 'polygon',         location: location() }; }
- / "ellipse"         { return { term: 'Shape', value: 'ellipse',         location: location() }; }
- / "oval"            { return { term: 'Shape', value: 'oval',            location: location() }; }
- / "circle"          { return { term: 'Shape', value: 'circle',          location: location() }; }
- / "point"           { return { term: 'Shape', value: 'point',           location: location() }; }
- / "egg"             { return { term: 'Shape', value: 'egg',             location: location() }; }
- / "triangle"        { return { term: 'Shape', value: 'triangle',        location: location() }; }
- / "plaintext"       { return { term: 'Shape', value: 'plaintext',       location: location() }; }
- / "plain"           { return { term: 'Shape', value: 'plain',           location: location() }; }
- / "diamond"         { return { term: 'Shape', value: 'diamond',         location: location() }; }
- / "trapezium"       { return { term: 'Shape', value: 'trapezium',       location: location() }; }
- / "parallelogram"   { return { term: 'Shape', value: 'parallelogram',   location: location() }; }
- / "house"           { return { term: 'Shape', value: 'house',           location: location() }; }
- / "pentagon"        { return { term: 'Shape', value: 'pentagon',        location: location() }; }
- / "hexagon"         { return { term: 'Shape', value: 'hexagon',         location: location() }; }
- / "septagon"        { return { term: 'Shape', value: 'septagon',        location: location() }; }
- / "octagon"         { return { term: 'Shape', value: 'octagon',         location: location() }; }
- / "doublecircle"    { return { term: 'Shape', value: 'doublecircle',    location: location() }; }
- / "doubleoctagon"   { return { term: 'Shape', value: 'doubleoctagon',   location: location() }; }
- / "tripleoctagon"   { return { term: 'Shape', value: 'tripleoctagon',   location: location() }; }
- / "invtriangle"     { return { term: 'Shape', value: 'invtriangle',     location: location() }; }
- / "invtrapezium"    { return { term: 'Shape', value: 'invtrapezium',    location: location() }; }
- / "invhouse"        { return { term: 'Shape', value: 'invhouse',        location: location() }; }
- / "Mdiamond"        { return { term: 'Shape', value: 'Mdiamond',        location: location() }; }
- / "Msquare"         { return { term: 'Shape', value: 'Msquare',         location: location() }; }
- / "Mcircle"         { return { term: 'Shape', value: 'Mcircle',         location: location() }; }
- / "rect"            { return { term: 'Shape', value: 'rect',            location: location() }; }
- / "rectangle"       { return { term: 'Shape', value: 'rectangle',       location: location() }; }
- / "square"          { return { term: 'Shape', value: 'square',          location: location() }; }
- / "star"            { return { term: 'Shape', value: 'star',            location: location() }; }
- / "none"            { return { term: 'Shape', value: 'none',            location: location() }; }
- / "underline"       { return { term: 'Shape', value: 'underline',       location: location() }; }
- / "cylinder"        { return { term: 'Shape', value: 'cylinder',        location: location() }; }
- / "note"            { return { term: 'Shape', value: 'note',            location: location() }; }
- / "tab"             { return { term: 'Shape', value: 'tab',             location: location() }; }
- / "folder"          { return { term: 'Shape', value: 'folder',          location: location() }; }
- / "box3d"           { return { term: 'Shape', value: 'box3d',           location: location() }; }
- / "component"       { return { term: 'Shape', value: 'component',       location: location() }; }
- / "promoter"        { return { term: 'Shape', value: 'promoter',        location: location() }; }
- / "cds"             { return { term: 'Shape', value: 'cds',             location: location() }; }
- / "terminator"      { return { term: 'Shape', value: 'terminator',      location: location() }; }
- / "utr"             { return { term: 'Shape', value: 'utr',             location: location() }; }
- / "primersite"      { return { term: 'Shape', value: 'primersite',      location: location() }; }
- / "restrictionsite" { return { term: 'Shape', value: 'restrictionsite', location: location() }; }
- / "fivepoverhang"   { return { term: 'Shape', value: 'fivepoverhang',   location: location() }; }
- / "threepoverhang"  { return { term: 'Shape', value: 'threepoverhang',  location: location() }; }
- / "noverhang"       { return { term: 'Shape', value: 'noverhang',       location: location() }; }
- / "assembly"        { return { term: 'Shape', value: 'assembly',        location: location() }; }
- / "signature"       { return { term: 'Shape', value: 'signature',       location: location() }; }
- / "insulator"       { return { term: 'Shape', value: 'insulator',       location: location() }; }
- / "ribosite"        { return { term: 'Shape', value: 'ribosite',        location: location() }; }
- / "rnastab"         { return { term: 'Shape', value: 'rnastab',         location: location() }; }
- / "proteasesite"    { return { term: 'Shape', value: 'proteasesite',    location: location() }; }
- / "proteinstab"     { return { term: 'Shape', value: 'proteinstab',     location: location() }; }
- / "rpromoter"       { return { term: 'Shape', value: 'rpromoter',       location: location() }; }
- / "rarrow"          { return { term: 'Shape', value: 'rarrow',          location: location() }; }
- / "larrow"          { return { term: 'Shape', value: 'larrow',          location: location() }; }
- / "lpromoter"       { return { term: 'Shape', value: 'lpromoter',       location: location() }; }
- / "record"          { return { term: 'Shape', value: 'record',          location: location() }; }
+ = value:_ShapeList { return { term: 'Shape', value, location: location() }; }
+
+
+Stripe
+  = '+|' value:NonNegIntegerLiteral { return { key: 'stripe', value,                  location: location() }; }
+  / '-|' value:NonNegIntegerLiteral { return { key: 'stripe', value: signflip(value), location: location() }; }
+
+Cycle
+  = '+'  value:NonNegIntegerLiteral { return { key: 'cycle',  value,                  location: location() }; }
+  / '-'  value:NonNegIntegerLiteral { return { key: 'cycle',  value: signflip(value), location: location() }; }
