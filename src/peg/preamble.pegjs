@@ -14,3 +14,5 @@ Document
   / GvizLayoutType
   / URL
   / MachineAttribute
+  / Stripe
+  / Cycle

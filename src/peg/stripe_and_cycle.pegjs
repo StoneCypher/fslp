@@ -1,9 +1,8 @@
 
 Stripe
-  = '+|' nzd:NonZeroDigit dd:DecimalDigit* { return { key: 'stripe', value:      parseInt(`${nzd}${dd}`, 10) }; }
-  / '-|' nzd:NonZeroDigit dd:DecimalDigit* { return { key: 'stripe', value: -1 * parseInt(`${nzd}${dd}`, 10) }; }
+  = '+|' value:NonNegIntegerLiteral { return { key: 'stripe', value,                  location: location() }; }
+  / '-|' value:NonNegIntegerLiteral { return { key: 'stripe', value: signflip(value), location: location() }; }
 
 Cycle
-  = '+' nzd:NonZeroDigit dd:DecimalDigit* { return { key: 'cycle', value:      parseInt(`${nzd}${dd}`, 10) }; }
-  / '-' nzd:NonZeroDigit dd:DecimalDigit* { return { key: 'cycle', value: -1 * parseInt(`${nzd}${dd}`, 10) }; }
-  / '+0'                                  { return { key: 'cycle', value: 0                                }; }
+  = '+'  value:NonNegIntegerLiteral { return { key: 'cycle',  value,                  location: location() }; }
+  / '-'  value:NonNegIntegerLiteral { return { key: 'cycle',  value: signflip(value), location: location() }; }

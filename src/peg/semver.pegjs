@@ -1,6 +1,6 @@
 
 SemVer
-  = major:IntegerLiteral "." minor:IntegerLiteral "." patch:IntegerLiteral
+  = major:NonNegIntegerLiteral "." minor:NonNegIntegerLiteral "." patch:NonNegIntegerLiteral
   {
     const pmajor = parseInt(major.value, 10),
           pminor = parseInt(minor.value, 10),

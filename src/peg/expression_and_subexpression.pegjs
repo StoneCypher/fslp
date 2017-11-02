@@ -3,15 +3,15 @@
 // change this to be unordered
 
 Subexpr
-  = WS? r_action : ActionLabel?
-    WS? r_prob   : ArrowProbability?
-    WS? l_desc   : ArrowDesc?
-    WS? arrow    : Arrow
-    WS? r_desc   : ArrowDesc?
-    WS? l_prob   : ArrowProbability?
-    WS? l_action : ActionLabel?
-    WS? label    : ArrowTarget
-    WS? tail     : Subexpr? {
+  = _WS? r_action : _ActionLabel?
+    _WS? r_prob   :  ArrowProbability?
+    _WS? l_desc   :  ArrowDesc?
+    _WS? arrow    :  Arrow
+    _WS? r_desc   :  ArrowDesc?
+    _WS? l_prob   :  ArrowProbability?
+    _WS? l_action : _ActionLabel?
+    _WS? label    :  ArrowTarget
+    _WS? tail     :  Subexpr? {
 
       // this changed kind to key.  some breakage may result?
       const base = { key: arrow, to: label };
@@ -31,6 +31,6 @@ Subexpr
 
 
 Expr
-  = label:ArrowTarget se:Subexpr WS? ';' WS? {
+  = label:ArrowTarget se:Subexpr _WS? ';' _WS? {
     return { key: 'transition', from: label, se: (se && (se !== []))? se : undefined };
   }
