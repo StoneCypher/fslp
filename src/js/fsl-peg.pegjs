@@ -1,8 +1,11 @@
 
 {
+
+  // used in cycles and stripes
   function signflip({ term, value, location }) {
     return { term, value: value * -1, location };
   }
+
 }
 
 
@@ -23,6 +26,7 @@ Document
   / MachineAttribute
   / Stripe
   / Cycle
+  / MachineConfig
 
 
 LabelOrListMachineAttributes
@@ -765,16 +769,20 @@ ArrowTarget
 
 
 _ShapeList
-  = "box"           / "polygon"       / "ellipse"         / "oval"          / "circle"         / "point"
-  / "egg"           / "triangle"      / "plaintext"       / "plain"         / "diamond"        / "trapezium"
-  / "parallelogram" / "house"         / "pentagon"        / "hexagon"       / "septagon"       / "octagon"
-  / "doublecircle"  / "doubleoctagon" / "tripleoctagon"   / "invtriangle"   / "invtrapezium"   / "invhouse"
-  / "Mdiamond"      / "Msquare"       / "Mcircle"         / "rect"          / "rectangle"      / "square"
-  / "star"          / "none"          / "underline"       / "cylinder"      / "note"           / "tab"
-  / "folder"        / "box3d"         / "component"       / "promoter"      / "cds"            / "terminator"
-  / "utr"           / "primersite"    / "restrictionsite" / "fivepoverhang" / "threepoverhang" / "noverhang"
-  / "assembly"      / "signature"     / "insulator"       / "ribosite"      / "rnastab"        / "proteasesite"
-  / "proteinstab"   / "rpromoter"     / "rarrow"          / "larrow"        / "lpromoter"      / "record"
+  = "box"            / "polygon"        / "ellipse"          / "oval"           / "circle"          / "point"
+  / "egg"            / "triangle"       / "plaintext"        / "plain"          / "diamond"         / "trapezium"
+  / "parallelogram"  / "house"          / "pentagon"         / "hexagon"        / "septagon"        / "octagon"
+  / "doublecircle"   / "doubleoctagon"  / "tripleoctagon"    / "invtriangle"    / "invtrapezium"    / "invhouse"
+  / "Mdiamond"       / "Msquare"        / "Mcircle"          / "rect"           / "rectangle"       / "square"
+  / "star"           / "none"           / "underline"        / "cylinder"       / "note"            / "tab"
+  / "folder"         / "box3d"          / "component"        / "promoter"       / "cds"             / "terminator"
+  / "utr"            / "primersite"     / "restrictionsite"  / "fivepoverhang"  / "threepoverhang"  / "noverhang"
+  / "assembly"       / "signature"      / "insulator"        / "ribosite"       / "rnastab"         / "proteasesite"
+  / "proteinstab"    / "rpromoter"      / "rarrow"           / "larrow"         / "lpromoter"       / "record"
+
+
+
+
 
 Shape "shape"
  = value:_ShapeList { return { term: 'Shape', value, location: location() }; }
@@ -787,3 +795,113 @@ Stripe
 Cycle
   = '+'  value:NonNegIntegerLiteral { return { key: 'cycle',  value,                  location: location() }; }
   / '-'  value:NonNegIntegerLiteral { return { key: 'cycle',  value: signflip(value), location: location() }; }
+
+
+MachineConfigTransition
+  = "transition" _WS? ":" _WS? "{" _WS? value:ConfigTransitionItems* _WS? "};" _WS? {
+    return { key: "config", config_topic: "transition", value, location: location() };
+  }
+
+
+
+MachineConfigStartState
+  = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStartStateItems* _WS? "};" _WS? {
+    return { key: "config", config_topic: "start_state", value, location: location() };
+  }
+
+MachineConfigEndState
+  = "end_state" _WS? ":" _WS? "{" _WS? value:ConfigEndStateItems* _WS? "};" _WS? {
+    return { key: "config", config_topic: "end_state", value, location: location() };
+  }
+
+MachineConfigState
+  = "state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
+    return { key: "config", config_topic: "state", value, location: location() };
+  }
+
+
+
+
+
+MachineConfig
+  = MachineConfigTransition
+
+
+_TransitionKey_HeadType
+  = "arrow_head"
+  / "reverse_arrow_head"
+
+
+ConfigTransitionItem_Head
+  = transitionkey:_TransitionKey_HeadType _WS? ":" _WS? value:ArrowHead _WS? ";" _WS? {
+    return { key: transitionkey, value, location: location() };
+  }
+
+
+
+
+
+_TransitionKey_Color
+  = "edge_color"
+  / "reverse_edge_color"
+
+
+ConfigTransitionItem_Color
+  = transitionkey:_TransitionKey_Color _WS? ":" _WS? value:Color _WS? ";" _WS? {
+    return { key: transitionkey, value, location: location() };
+  }
+
+
+
+
+
+ConfigTransitionItems
+  = ConfigTransitionItem_Color
+  / ConfigTransitionItem_Head
+
+
+_StateItemThingKey_Shape
+  = "node_shape"
+
+ConfigStateItemThings_Shape
+  = _StateItemThingKey_Shape
+
+
+
+
+
+ConfigStateItemThings
+  = ConfigStateItemThings_Shape
+
+
+
+
+
+ConfigStartStateItems
+  = ConfigStateItemThings
+
+ConfigEndStateItems
+  = ConfigStateItemThings
+
+ConfigStateItems
+  = ConfigStateItemThings
+
+
+_ArrowHeadList
+ = "box"       / "lbox"       / "rbox"       / "obox"      / "olbox"     / "orbox"
+ / "crow"      / "lcrow"      / "rcrow"      / "diamond"   / "ldiamond"  / "rdiamond"
+ / "odiamond"  / "oldiamond"  / "ordiamond"  / "dot"       / "odot"      / "inv"
+ / "linv"      / "rinv"       / "oinv"       / "olinv"     / "orinv"     / "none"
+ / "normal"    / "lnormal"    / "rnormal"    / "onormal"   / "olnormal"  / "ornormal"
+ / "tee"       / "ltee"       / "rtee"       / "vee"       / "lvee"      / "rvee"
+ / "curve"     / "lcurve"     / "rcurve"     / "icurve"    / "licurve"   / "ricurve"
+
+
+
+
+
+ArrowHead "shape"
+ = value:_ArrowHeadList { return { term: 'ArrowHead', value, location: location() }; }
+
+ReverseArrowHead "shape"
+ = value:_ArrowHeadList { return { term: 'ArrowHead', value, location: location() }; }

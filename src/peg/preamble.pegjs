@@ -16,3 +16,4 @@ Document
   / MachineAttribute
   / Stripe
   / Cycle
+  / MachineConfig
