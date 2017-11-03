@@ -899,7 +899,7 @@ ConfigStateItemThings
 
 
 ConfigStateItems
-  = value:ConfigStateItemThings { return { term: 'Config_StateItem', value, location() }; }
+  = value:ConfigStateItemThings { return { term: 'Config_StateItem', value, location: location() }; }
 
 
 _ArrowHeadList
