@@ -1,0 +1,103 @@
+
+
+
+ValidationKey
+  = "whargarbl"
+  / "todo"
+
+ValidationItem
+  = validationkey:ValidationKey ":" value:Label ";" { return {key:validationkey, value:value}; }
+
+ValidationItems
+  = ValidationItem+
+
+ConfigValidation
+  = WS? "validation" WS? ":" WS? "{" WS? validation_items:ValidationItems? WS? "};" WS? {
+    return { config_kind: "validation", config_items: validation_items || [] };
+  }
+
+
+
+
+
+ActionKey
+  = "whargarbl"
+  / "todo"
+
+ActionItem
+  = actionkey:ActionKey ":" value:Label ";" { return {key:actionkey, value:value}; }
+
+ActionItems
+  = ActionItem+
+
+ConfigAction
+  = WS? "action" WS? ":" WS? "{" WS? action_items:ActionItems? WS? "};" WS? {
+    return { config_kind: "action", config_items: action_items || [] };
+  }
+
+
+
+
+
+
+ConfigStartNodes
+  = WS? "start_states"   WS? ":" WS? value:LabelList  WS? ";" WS? { return {key:"start_states",   value:value}; }
+
+ConfigEndNodes
+  = WS? "end_states"     WS? ":" WS? value:LabelList  WS? ";" WS? { return {key:"end_states",     value:value}; }
+
+ConfigGraphBgColor
+  = WS? "graph_bg_color" WS? ":" WS? value:Color      WS? ";" WS? { return {key:"graph_bg_color", value:value}; }
+
+
+
+Config "configuration"
+  = ConfigGraphLayout
+  / ConfigStartNodes
+  / ConfigEndNodes
+  / ConfigTransition
+  / ConfigAction
+  / ConfigState
+  / ConfigValidation
+  / ConfigGraphBgColor
+
+
+
+
+
+SdNodeColor "node color"
+  = WS? "node_color" WS? ":" WS? value:Color WS? ";" WS? { return {key:'node_color', value:value}; }
+
+SdNodeShape "node shape"
+  = WS? "node_shape" WS? ":" WS? value:GvizShape WS? ";" WS? { return {key:'node_shape', value:value}; }
+
+StateDeclarationItems
+  = SdNodeColor
+  / SdNodeShape
+
+StateDeclarationDesc
+  = "{" WS? items:StateDeclarationItems* WS? "}" { return items; }
+
+StateDeclaration
+  = WS? state_name:Label WS? ":" WS? decl_desc:StateDeclarationDesc WS? ";" WS? { return {key:'state_declaration', name: state_name, value:decl_desc}; }
+
+
+
+
+NamedList
+  = WS? "&" WS? list_name:Label WS? ":" WS? contents:LabelOrLabelList WS? ";" WS? {
+    return { key:'named_list', name:list_name, value:contents };
+  }
+
+
+
+
+Term
+  = Exp
+  / StateDeclaration
+  / NamedList
+  / MachineAttribute
+  / Config
+
+TermList
+  = term:Term*

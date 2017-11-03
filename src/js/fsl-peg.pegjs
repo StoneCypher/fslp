@@ -14,9 +14,6 @@ Input
 
 Document
   = Arrow
-  / Shape
-  / NamedColor
-  / Color
   / SemVer
   / NonNegNumber
   / LicenseNotation
@@ -27,6 +24,9 @@ Document
   / Stripe
   / Cycle
   / MachineConfig
+  / Shape
+  / NamedColor
+  / Color
 
 
 LabelOrListMachineAttributes
@@ -72,12 +72,14 @@ MachineAttribute_Semver
 
 MachineDefinition
   = "machine_definition" _WS? ":" _WS? definition:URL _WS? ";" _WS? {
-    return { term: "machine_definition", value: definition, location: location() }; }
+    return { term: "machine_definition", value: definition, location: location() };
+  }
 
 
 MachineLicense
   = "machine_license" _WS? ":" _WS? license:LicenseNotation _WS? ";" _WS? {
-    return { term: "machine_license", value: license, location: location() }; }
+    return { term: "machine_license", value: license, location: location() };
+  }
 
 
 
@@ -788,11 +790,11 @@ Shape "shape"
  = value:_ShapeList { return { term: 'Shape', value, location: location() }; }
 
 
-Stripe
+Stripe "stripe"
   = '+|' value:NonNegIntegerLiteral { return { key: 'stripe', value,                  location: location() }; }
   / '-|' value:NonNegIntegerLiteral { return { key: 'stripe', value: signflip(value), location: location() }; }
 
-Cycle
+Cycle "cycle"
   = '+'  value:NonNegIntegerLiteral { return { key: 'cycle',  value,                  location: location() }; }
   / '-'  value:NonNegIntegerLiteral { return { key: 'cycle',  value: signflip(value), location: location() }; }
 
@@ -804,18 +806,20 @@ MachineConfigTransition
 
 
 
+
+
 MachineConfigStartState
-  = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStartStateItems* _WS? "};" _WS? {
+  = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
     return { key: "config", config_topic: "start_state", value, location: location() };
   }
 
 MachineConfigEndState
-  = "end_state" _WS? ":" _WS? "{" _WS? value:ConfigEndStateItems* _WS? "};" _WS? {
+  = "end_state"   _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
     return { key: "config", config_topic: "end_state", value, location: location() };
   }
 
 MachineConfigState
-  = "state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
+  = "state"       _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
     return { key: "config", config_topic: "state", value, location: location() };
   }
 
@@ -823,8 +827,12 @@ MachineConfigState
 
 
 
-MachineConfig
+MachineConfig "machine config"
   = MachineConfigTransition
+  / MachineConfigStartState
+  / MachineConfigEndState
+  / MachineConfigState
+
 
 
 _TransitionKey_HeadType
@@ -864,7 +872,19 @@ _StateItemThingKey_Shape
   = "node_shape"
 
 ConfigStateItemThings_Shape
-  = _StateItemThingKey_Shape
+  = value:_StateItemThingKey_Shape  { return { term: 'Shape', value, location: location() }; }
+
+
+
+
+
+_StateItemThingKey_Color
+  = "node_color"
+  / "node_border_color"
+
+ConfigStateItemThings_Color
+  = _StateItemThingKey_Color
+
 
 
 
@@ -872,19 +892,14 @@ ConfigStateItemThings_Shape
 
 ConfigStateItemThings
   = ConfigStateItemThings_Shape
+  / ConfigStateItemThings_Color
 
 
 
 
-
-ConfigStartStateItems
-  = ConfigStateItemThings
-
-ConfigEndStateItems
-  = ConfigStateItemThings
 
 ConfigStateItems
-  = ConfigStateItemThings
+  = value:ConfigStateItemThings { return { term: 'Config_StateItem', value, location() }; }
 
 
 _ArrowHeadList

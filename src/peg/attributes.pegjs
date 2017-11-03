@@ -42,12 +42,14 @@ MachineAttribute_Semver
 
 MachineDefinition
   = "machine_definition" _WS? ":" _WS? definition:URL _WS? ";" _WS? {
-    return { term: "machine_definition", value: definition, location: location() }; }
+    return { term: "machine_definition", value: definition, location: location() };
+  }
 
 
 MachineLicense
   = "machine_license" _WS? ":" _WS? license:LicenseNotation _WS? ";" _WS? {
-    return { term: "machine_license", value: license, location: location() }; }
+    return { term: "machine_license", value: license, location: location() };
+  }
 
 
 

@@ -3,7 +3,19 @@ _StateItemThingKey_Shape
   = "node_shape"
 
 ConfigStateItemThings_Shape
-  = _StateItemThingKey_Shape
+  = value:_StateItemThingKey_Shape  { return { term: 'Shape', value, location: location() }; }
+
+
+
+
+
+_StateItemThingKey_Color
+  = "node_color"
+  / "node_border_color"
+
+ConfigStateItemThings_Color
+  = _StateItemThingKey_Color
+
 
 
 
@@ -11,16 +23,11 @@ ConfigStateItemThings_Shape
 
 ConfigStateItemThings
   = ConfigStateItemThings_Shape
+  / ConfigStateItemThings_Color
 
 
 
 
-
-ConfigStartStateItems
-  = ConfigStateItemThings
-
-ConfigEndStateItems
-  = ConfigStateItemThings
 
 ConfigStateItems
-  = ConfigStateItemThings
+  = value:ConfigStateItemThings { return { term: 'Config_StateItem', value, location() }; }

@@ -4,9 +4,6 @@ Input
 
 Document
   = Arrow
-  / Shape
-  / NamedColor
-  / Color
   / SemVer
   / NonNegNumber
   / LicenseNotation
@@ -17,3 +14,6 @@ Document
   / Stripe
   / Cycle
   / MachineConfig
+  / Shape
+  / NamedColor
+  / Color

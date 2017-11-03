@@ -6,18 +6,20 @@ MachineConfigTransition
 
 
 
+
+
 MachineConfigStartState
-  = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStartStateItems* _WS? "};" _WS? {
+  = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
     return { key: "config", config_topic: "start_state", value, location: location() };
   }
 
 MachineConfigEndState
-  = "end_state" _WS? ":" _WS? "{" _WS? value:ConfigEndStateItems* _WS? "};" _WS? {
+  = "end_state"   _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
     return { key: "config", config_topic: "end_state", value, location: location() };
   }
 
 MachineConfigState
-  = "state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
+  = "state"       _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
     return { key: "config", config_topic: "state", value, location: location() };
   }
 
@@ -25,5 +27,9 @@ MachineConfigState
 
 
 
-MachineConfig
+MachineConfig "machine config"
   = MachineConfigTransition
+  / MachineConfigStartState
+  / MachineConfigEndState
+  / MachineConfigState
+
