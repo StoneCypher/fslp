@@ -1,4 +1,6 @@
 
+// todo whargarbl turn this to 'foo'i style rules
+
 NamedColor "named color"
   = 'aliceblue'            { return { term: 'Color', value: 'f0f8ffff', location: location() }; }
   / 'AliceBlue'            { return { term: 'Color', value: 'f0f8ffff', location: location() }; }
