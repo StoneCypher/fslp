@@ -23,6 +23,10 @@ _Escape    = "\\"
 _QuoteMark = '"'
 _Unescaped = [\x20-\x21\x23-\x5B\x5D-\u10FFFF]  // explicitly omits "
 
+
+
+
+
 _ActionLabelChar
   = _ActionLabelUnescaped
   / _Escape Sequence:(
@@ -47,8 +51,18 @@ _ActionLabelUnescaped = [\x20-\x26\x28-\x5B\x5D-\u10FFFF]  // explicitly omits '
 _ActionLabel "action label"
   = _ActionLabelQuoteMark chars:_ActionLabelChar* _ActionLabelQuoteMark { return chars.join(""); }
 
+
+
+
+
 _String "string"
-  = _QuoteMark chars:_Char* _QuoteMark { return chars.join(""); }
+  = _QuoteMark chars:_Char* _QuoteMark {
+    return { type: "label", written_as: "string", value: chars.join(""), location: location() };
+  }
+
+
+
+
 
 _AtomFirstLetter
   = [0-9a-zA-Z\.\_\!\$\^\*\!\?\,\x80-\uFFFF]
@@ -58,16 +72,23 @@ _AtomLetter
 
 _Atom "atom"
   = firstletter:_AtomFirstLetter text:_AtomLetter* {
-      return firstletter + ((text || []).join(''));
+      const value = firstletter + ((text || []).join(''));
+      return { type: "label", written_as: "atom", value, location: location() };
     }
+
+
+
+
 
 _Label "label"
   = atom:_Atom
   / string:_String
 
-_LabelList
-  = "[" _WS? names:(_Label _WS?)* "]" { return names.map(i => i[0]); }
+_LabelList "label list"
+  = "[" _WS? names:(_Label _WS?)* "]" {
+    return { type: "label_list", value: names.map(i => i[0]), location: location() };
+  }
 
-_LabelOrLabelList
+_LabelOrLabelList "label or label list"
   = _LabelList
   / _Label
