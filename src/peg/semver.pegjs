@@ -7,7 +7,7 @@ SemVer
           ppatch = parseInt(patch.value, 10);
 
     return {
-      term   : 'SemVer',
+      term   : 'semver',
 
       major  : pmajor,
       minor  : pminor,

@@ -1,7 +1,7 @@
 
 MachineConfigTransition
   = "transition" _WS? ":" _WS? "{" _WS? value:ConfigTransitionItems* _WS? "};" _WS? {
-    return { term: "config", config_topic: "transition", value, location: location() };
+    return { term: "machine_config_transition", value, location: location() };
   }
 
 
@@ -10,7 +10,7 @@ MachineConfigTransition
 
 MachineConfigStartState
   = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { term: "config", config_topic: "start_state", value, location: location() };
+    return { term: "machine_config_start_state", value, location: location() };
   }
 
 MachineConfigEndState

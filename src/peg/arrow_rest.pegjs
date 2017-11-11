@@ -5,10 +5,14 @@ ArrowItemKey
   / "tail_label"
 
 ArrowItem
-  = term:ArrowItemKey _WS? ":" _WS? value:_Label _WS? ";" _WS? { return { term, value }; }
+  = term:ArrowItemKey _WS? ":" _WS? value:_Label _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
 
 SingleEdgeColor "single edge color"
-  = _WS? "edge_color" _WS? ":" _WS? value:Color _WS? ";" _WS? { return {key:'single_edge_color', value:value}; }
+  = "edge_color" _WS? ":" _WS? value:Color _WS? ";" _WS? {
+    return { term: 'single_edge_color', value, location: location() };
+  }
 
 ArrowItems
   = SingleEdgeColor
@@ -18,7 +22,9 @@ ArrowDesc
   = "{" _WS? items:ArrowItems? _WS? "}" { return items; }
 
 ArrowProbability
-  = value:NonNegNumber "%" { return { key: 'arrow probability', value: value }; }
+  = value:NonNegNumber "%" {
+    return { term: 'arrow_probability', value, location: location() };
+  }
 
 
 

@@ -11,6 +11,9 @@
 
 Input
   = _WS? d:Document { return d; }
+/*
+  = _WS? d:Document { return { term: 'document', value: d, location: location() }; }
+*/
 
 Document
   = Arrow
@@ -152,29 +155,50 @@ _LineComment "line comment"
   = "//" _LineCommentTail
 
 _WS "whitespace"
-  = _BlockComment _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
-  / _LineComment  _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
-  / [ \t\r\n\v]+  _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
+  = _BlockComment _WS? { return { term: 'whitespace', value: undefined, location: location() }; }
+  / _LineComment  _WS? { return { term: 'whitespace', value: undefined, location: location() }; }
+  / [ \t\r\n\v]+  _WS? { return { term: 'whitespace', value: undefined, location: location() }; }
 
 
 _UrlProtocol
-  = 'hsts://'
-  / 'http://'
-  / 'https://'
+  = 'hsts'
+  / 'http'
+  / 'https'
+  / 'hxxp'
+  / 'hxxps'
+  / 'shttp'
+  / 'ftp'
+  / 'sftp'
+  / 'rsync'
+  / 'tftp'
+  / 'git'
+  / 'svn'
+  / 'file'
+  / 'filesystem'
+  / 'res'
+  / 'resource'
+  / 'appdata'
+  / 'data'
+  / 'redis'
+  / 'service'
 
 URL "url"
-  = protocol:_UrlProtocol [a-zA-Z0-9\!\*\'\(\)\:\;\@\&\=\+\$\,\/\?\#\[\]\_\.\~\-]+ { return { term: "URL", value: text(), location: location() }; }
+  = protocol:_UrlProtocol ":" [a-zA-Z0-9\!\*\'\(\)\:\;\@\&\=\+\$\,\/\?\#\[\]\_\.\~\-]+ {
+  	return { term: "url", protocol, value: text(), location: location() };
+  }
 
 
-GvizLayoutType "gviz layout type"
-  = "dot"   { return { term: "Layout Type", value: "dot",   location: location() }; }
-  / "circo" { return { term: "Layout Type", value: "circo", location: location() }; }
-  / "fdp"   { return { term: "Layout Type", value: "fdp",   location: location() }; }
-  / "neato" { return { term: "Layout Type", value: "neato", location: location() }; }
+GvizLayoutType "gviz layout_type"
+  = "dot"   { return { term: "layout_type", value: "dot",   location: location() }; }
+  / "circo" { return { term: "layout_type", value: "circo", location: location() }; }
+  / "fdp"   { return { term: "layout_type", value: "fdp",   location: location() }; }
+  / "neato" { return { term: "layout_type", value: "neato", location: location() }; }
 
 GraphLayout "graph layout"
   = "graph_layout" _WS? ":" _WS? value:GvizLayoutType _WS? ";" _WS? { return { term: "Graph Layout", value, location: location() }; }
 
+
+/* whargarbl there's a lot of todo down here */
 
 _Char
   = _Unescaped
@@ -249,18 +273,18 @@ _LabelOrLabelList
 
 
 LicenseNotation "license"
-  = 'MIT'                    { return { term: 'License', value: 'MIT',           known: true,  viral: false,     location: location() }; }
-  / 'BSD 2-clause'           { return { term: 'License', value: 'BSD 2-clause',  known: true,  viral: false,     location: location() }; }
-  / 'BSD 3-clause'           { return { term: 'License', value: 'BSD 3-clause',  known: true,  viral: false,     location: location() }; }
-  / 'Apache 2.0'             { return { term: 'License', value: 'Apache 2.0',    known: true,  viral: false,     location: location() }; }
-  / 'Mozilla 2.0'            { return { term: 'License', value: 'Mozilla 2.0',   known: true,  viral: false,     location: location() }; }
-  / 'Public domain'          { return { term: 'License', value: 'Public domain', known: true,  viral: false,     location: location() }; }
-  / 'GPL v2'                 { return { term: 'License', value: 'GPL v2',        known: true,  viral: true,      location: location() }; }
-  / 'GPL v3'                 { return { term: 'License', value: 'GPV v3',        known: true,  viral: true,      location: location() }; }
-  / 'LGPL v2.1'              { return { term: 'License', value: 'LGPL v2.1',     known: true,  viral: true,      location: location() }; }
-  / 'LGPL v3.0'              { return { term: 'License', value: 'LGPL v3.0',     known: true,  viral: true,      location: location() }; }
-  / 'Unknown license'        { return { term: 'License', value: undefined,       known: false, viral: undefined, location: location() }; }
-  / 'License ' custom:_Label { return { term: 'License', value: custom,          known: true,  viral: undefined, location: location() }; }
+  = 'MIT'                    { return { term: 'license', value: 'MIT',           known: true,  viral: false,     location: location() }; }
+  / 'BSD 2-clause'           { return { term: 'license', value: 'BSD 2-clause',  known: true,  viral: false,     location: location() }; }
+  / 'BSD 3-clause'           { return { term: 'license', value: 'BSD 3-clause',  known: true,  viral: false,     location: location() }; }
+  / 'Apache 2.0'             { return { term: 'license', value: 'Apache 2.0',    known: true,  viral: false,     location: location() }; }
+  / 'Mozilla 2.0'            { return { term: 'license', value: 'Mozilla 2.0',   known: true,  viral: false,     location: location() }; }
+  / 'Public domain'          { return { term: 'license', value: 'Public domain', known: true,  viral: false,     location: location() }; }
+  / 'GPL v2'                 { return { term: 'license', value: 'GPL v2',        known: true,  viral: true,      location: location() }; }
+  / 'GPL v3'                 { return { term: 'license', value: 'GPV v3',        known: true,  viral: true,      location: location() }; }
+  / 'LGPL v2.1'              { return { term: 'license', value: 'LGPL v2.1',     known: true,  viral: true,      location: location() }; }
+  / 'LGPL v3.0'              { return { term: 'license', value: 'LGPL v3.0',     known: true,  viral: true,      location: location() }; }
+  / 'Unknown license'        { return { term: 'license', value: undefined,       known: false, viral: undefined, location: location() }; }
+  / 'License ' custom:_Label { return { term: 'license', value: custom,          known: true,  viral: undefined, location: location() }; }
 
 
 _HexDigit
@@ -289,7 +313,7 @@ SemVer
           ppatch = parseInt(patch.value, 10);
 
     return {
-      term   : 'SemVer',
+      term   : 'semver',
 
       major  : pmajor,
       minor  : pminor,
@@ -316,318 +340,320 @@ _SemVerRange
   = _SemVerRule _SemVerRule?
 
 
+// todo whargarbl turn this to 'foo'i style rules
+
 NamedColor "named color"
-  = 'aliceblue'            { return { term: 'Color', value: 'f0f8ffff', location: location() }; }
-  / 'AliceBlue'            { return { term: 'Color', value: 'f0f8ffff', location: location() }; }
-  / 'antiquewhite'         { return { term: 'Color', value: 'faebd7ff', location: location() }; }
-  / 'AntiqueWhite'         { return { term: 'Color', value: 'faebd7ff', location: location() }; }
-  / 'aqua'                 { return { term: 'Color', value: '00ffffff', location: location() }; }
-  / 'Aqua'                 { return { term: 'Color', value: '00ffffff', location: location() }; }
-  / 'aquamarine'           { return { term: 'Color', value: '7fffd4ff', location: location() }; }
-  / 'Aquamarine'           { return { term: 'Color', value: '7fffd4ff', location: location() }; }
-  / 'azure'                { return { term: 'Color', value: 'f0ffffff', location: location() }; }
-  / 'Azure'                { return { term: 'Color', value: 'f0ffffff', location: location() }; }
-  / 'beige'                { return { term: 'Color', value: 'f5f5dcff', location: location() }; }
-  / 'Beige'                { return { term: 'Color', value: 'f5f5dcff', location: location() }; }
-  / 'bisque'               { return { term: 'Color', value: 'ffe4c4ff', location: location() }; }
-  / 'Bisque'               { return { term: 'Color', value: 'ffe4c4ff', location: location() }; }
-  / 'black'                { return { term: 'Color', value: '000000ff', location: location() }; }
-  / 'Black'                { return { term: 'Color', value: '000000ff', location: location() }; }
-  / 'blanchedalmond'       { return { term: 'Color', value: 'ffebcdff', location: location() }; }
-  / 'BlanchedAlmond'       { return { term: 'Color', value: 'ffebcdff', location: location() }; }
-  / 'blue'                 { return { term: 'Color', value: '0000ffff', location: location() }; }
-  / 'Blue'                 { return { term: 'Color', value: '0000ffff', location: location() }; }
-  / 'blueviolet'           { return { term: 'Color', value: '8a2be2ff', location: location() }; }
-  / 'BlueViolet'           { return { term: 'Color', value: '8a2be2ff', location: location() }; }
-  / 'brown'                { return { term: 'Color', value: 'a52a2aff', location: location() }; }
-  / 'Brown'                { return { term: 'Color', value: 'a52a2aff', location: location() }; }
-  / 'burlywood'            { return { term: 'Color', value: 'deb887ff', location: location() }; }
-  / 'BurlyWood'            { return { term: 'Color', value: 'deb887ff', location: location() }; }
-  / 'cadetblue'            { return { term: 'Color', value: '5f9ea0ff', location: location() }; }
-  / 'CadetBlue'            { return { term: 'Color', value: '5f9ea0ff', location: location() }; }
-  / 'chartreuse'           { return { term: 'Color', value: '7fff00ff', location: location() }; }
-  / 'Chartreuse'           { return { term: 'Color', value: '7fff00ff', location: location() }; }
-  / 'chocolate'            { return { term: 'Color', value: 'd2691eff', location: location() }; }
-  / 'Chocolate'            { return { term: 'Color', value: 'd2691eff', location: location() }; }
-  / 'coral'                { return { term: 'Color', value: 'ff7f50ff', location: location() }; }
-  / 'Coral'                { return { term: 'Color', value: 'ff7f50ff', location: location() }; }
-  / 'cornflowerblue'       { return { term: 'Color', value: '6495edff', location: location() }; }
-  / 'CornflowerBlue'       { return { term: 'Color', value: '6495edff', location: location() }; }
-  / 'cornsilk'             { return { term: 'Color', value: 'fff8dcff', location: location() }; }
-  / 'Cornsilk'             { return { term: 'Color', value: 'fff8dcff', location: location() }; }
-  / 'crimson'              { return { term: 'Color', value: 'dc143cff', location: location() }; }
-  / 'Crimson'              { return { term: 'Color', value: 'dc143cff', location: location() }; }
-  / 'cyan'                 { return { term: 'Color', value: '00ffffff', location: location() }; }
-  / 'Cyan'                 { return { term: 'Color', value: '00ffffff', location: location() }; }
-  / 'darkblue'             { return { term: 'Color', value: '00008bff', location: location() }; }
-  / 'DarkBlue'             { return { term: 'Color', value: '00008bff', location: location() }; }
-  / 'darkcyan'             { return { term: 'Color', value: '008b8bff', location: location() }; }
-  / 'DarkCyan'             { return { term: 'Color', value: '008b8bff', location: location() }; }
-  / 'darkgoldenrod'        { return { term: 'Color', value: 'b8860bff', location: location() }; }
-  / 'DarkGoldenRod'        { return { term: 'Color', value: 'b8860bff', location: location() }; }
-  / 'darkgray'             { return { term: 'Color', value: 'a9a9a9ff', location: location() }; }
-  / 'DarkGray'             { return { term: 'Color', value: 'a9a9a9ff', location: location() }; }
-  / 'darkgrey'             { return { term: 'Color', value: 'a9a9a9ff', location: location() }; }
-  / 'DarkGrey'             { return { term: 'Color', value: 'a9a9a9ff', location: location() }; }
-  / 'darkgreen'            { return { term: 'Color', value: '006400ff', location: location() }; }
-  / 'DarkGreen'            { return { term: 'Color', value: '006400ff', location: location() }; }
-  / 'darkkhaki'            { return { term: 'Color', value: 'bdb76bff', location: location() }; }
-  / 'DarkKhaki'            { return { term: 'Color', value: 'bdb76bff', location: location() }; }
-  / 'darkmagenta'          { return { term: 'Color', value: '8b008bff', location: location() }; }
-  / 'DarkMagenta'          { return { term: 'Color', value: '8b008bff', location: location() }; }
-  / 'darkolivegreen'       { return { term: 'Color', value: '556b2fff', location: location() }; }
-  / 'DarkOliveGreen'       { return { term: 'Color', value: '556b2fff', location: location() }; }
-  / 'darkorange'           { return { term: 'Color', value: 'ff8c00ff', location: location() }; }
-  / 'Darkorange'           { return { term: 'Color', value: 'ff8c00ff', location: location() }; }
-  / 'darkorchid'           { return { term: 'Color', value: '9932ccff', location: location() }; }
-  / 'DarkOrchid'           { return { term: 'Color', value: '9932ccff', location: location() }; }
-  / 'darkred'              { return { term: 'Color', value: '8b0000ff', location: location() }; }
-  / 'DarkRed'              { return { term: 'Color', value: '8b0000ff', location: location() }; }
-  / 'darksalmon'           { return { term: 'Color', value: 'e9967aff', location: location() }; }
-  / 'DarkSalmon'           { return { term: 'Color', value: 'e9967aff', location: location() }; }
-  / 'darkseagreen'         { return { term: 'Color', value: '8fbc8fff', location: location() }; }
-  / 'DarkSeaGreen'         { return { term: 'Color', value: '8fbc8fff', location: location() }; }
-  / 'darkslateblue'        { return { term: 'Color', value: '483d8bff', location: location() }; }
-  / 'DarkSlateBlue'        { return { term: 'Color', value: '483d8bff', location: location() }; }
-  / 'darkslategray'        { return { term: 'Color', value: '2f4f4fff', location: location() }; }
-  / 'DarkSlateGray'        { return { term: 'Color', value: '2f4f4fff', location: location() }; }
-  / 'darkslategrey'        { return { term: 'Color', value: '2f4f4fff', location: location() }; }
-  / 'DarkSlateGrey'        { return { term: 'Color', value: '2f4f4fff', location: location() }; }
-  / 'darkturquoise'        { return { term: 'Color', value: '00ced1ff', location: location() }; }
-  / 'DarkTurquoise'        { return { term: 'Color', value: '00ced1ff', location: location() }; }
-  / 'darkviolet'           { return { term: 'Color', value: '9400d3ff', location: location() }; }
-  / 'DarkViolet'           { return { term: 'Color', value: '9400d3ff', location: location() }; }
-  / 'deeppink'             { return { term: 'Color', value: 'ff1493ff', location: location() }; }
-  / 'DeepPink'             { return { term: 'Color', value: 'ff1493ff', location: location() }; }
-  / 'deepskyblue'          { return { term: 'Color', value: '00bfffff', location: location() }; }
-  / 'DeepSkyBlue'          { return { term: 'Color', value: '00bfffff', location: location() }; }
-  / 'dimgray'              { return { term: 'Color', value: '696969ff', location: location() }; }
-  / 'DimGray'              { return { term: 'Color', value: '696969ff', location: location() }; }
-  / 'dimgrey'              { return { term: 'Color', value: '696969ff', location: location() }; }
-  / 'DimGrey'              { return { term: 'Color', value: '696969ff', location: location() }; }
-  / 'dodgerblue'           { return { term: 'Color', value: '1e90ffff', location: location() }; }
-  / 'DodgerBlue'           { return { term: 'Color', value: '1e90ffff', location: location() }; }
-  / 'firebrick'            { return { term: 'Color', value: 'b22222ff', location: location() }; }
-  / 'FireBrick'            { return { term: 'Color', value: 'b22222ff', location: location() }; }
-  / 'floralwhite'          { return { term: 'Color', value: 'fffaf0ff', location: location() }; }
-  / 'FloralWhite'          { return { term: 'Color', value: 'fffaf0ff', location: location() }; }
-  / 'forestgreen'          { return { term: 'Color', value: '228b22ff', location: location() }; }
-  / 'ForestGreen'          { return { term: 'Color', value: '228b22ff', location: location() }; }
-  / 'fuchsia'              { return { term: 'Color', value: 'ff00ffff', location: location() }; }
-  / 'Fuchsia'              { return { term: 'Color', value: 'ff00ffff', location: location() }; }
-  / 'gainsboro'            { return { term: 'Color', value: 'dcdcdcff', location: location() }; }
-  / 'Gainsboro'            { return { term: 'Color', value: 'dcdcdcff', location: location() }; }
-  / 'ghostwhite'           { return { term: 'Color', value: 'f8f8ffff', location: location() }; }
-  / 'GhostWhite'           { return { term: 'Color', value: 'f8f8ffff', location: location() }; }
-  / 'gold'                 { return { term: 'Color', value: 'ffd700ff', location: location() }; }
-  / 'Gold'                 { return { term: 'Color', value: 'ffd700ff', location: location() }; }
-  / 'goldenrod'            { return { term: 'Color', value: 'daa520ff', location: location() }; }
-  / 'GoldenRod'            { return { term: 'Color', value: 'daa520ff', location: location() }; }
-  / 'gray'                 { return { term: 'Color', value: '808080ff', location: location() }; }
-  / 'Gray'                 { return { term: 'Color', value: '808080ff', location: location() }; }
-  / 'grey'                 { return { term: 'Color', value: '808080ff', location: location() }; }
-  / 'Grey'                 { return { term: 'Color', value: '808080ff', location: location() }; }
-  / 'green'                { return { term: 'Color', value: '008000ff', location: location() }; }
-  / 'Green'                { return { term: 'Color', value: '008000ff', location: location() }; }
-  / 'greenyellow'          { return { term: 'Color', value: 'adff2fff', location: location() }; }
-  / 'GreenYellow'          { return { term: 'Color', value: 'adff2fff', location: location() }; }
-  / 'honeydew'             { return { term: 'Color', value: 'f0fff0ff', location: location() }; }
-  / 'HoneyDew'             { return { term: 'Color', value: 'f0fff0ff', location: location() }; }
-  / 'hotpink'              { return { term: 'Color', value: 'ff69b4ff', location: location() }; }
-  / 'HotPink'              { return { term: 'Color', value: 'ff69b4ff', location: location() }; }
-  / 'indianred'            { return { term: 'Color', value: 'cd5c5cff', location: location() }; }
-  / 'IndianRed'            { return { term: 'Color', value: 'cd5c5cff', location: location() }; }
-  / 'indigo'               { return { term: 'Color', value: '4b0082ff', location: location() }; }
-  / 'Indigo'               { return { term: 'Color', value: '4b0082ff', location: location() }; }
-  / 'ivory'                { return { term: 'Color', value: 'fffff0ff', location: location() }; }
-  / 'Ivory'                { return { term: 'Color', value: 'fffff0ff', location: location() }; }
-  / 'khaki'                { return { term: 'Color', value: 'f0e68cff', location: location() }; }
-  / 'Khaki'                { return { term: 'Color', value: 'f0e68cff', location: location() }; }
-  / 'lavender'             { return { term: 'Color', value: 'e6e6faff', location: location() }; }
-  / 'Lavender'             { return { term: 'Color', value: 'e6e6faff', location: location() }; }
-  / 'lavenderblush'        { return { term: 'Color', value: 'fff0f5ff', location: location() }; }
-  / 'LavenderBlush'        { return { term: 'Color', value: 'fff0f5ff', location: location() }; }
-  / 'lawngreen'            { return { term: 'Color', value: '7cfc00ff', location: location() }; }
-  / 'LawnGreen'            { return { term: 'Color', value: '7cfc00ff', location: location() }; }
-  / 'lemonchiffon'         { return { term: 'Color', value: 'fffacdff', location: location() }; }
-  / 'LemonChiffon'         { return { term: 'Color', value: 'fffacdff', location: location() }; }
-  / 'lightblue'            { return { term: 'Color', value: 'add8e6ff', location: location() }; }
-  / 'LightBlue'            { return { term: 'Color', value: 'add8e6ff', location: location() }; }
-  / 'lightcoral'           { return { term: 'Color', value: 'f08080ff', location: location() }; }
-  / 'LightCoral'           { return { term: 'Color', value: 'f08080ff', location: location() }; }
-  / 'lightcyan'            { return { term: 'Color', value: 'e0ffffff', location: location() }; }
-  / 'LightCyan'            { return { term: 'Color', value: 'e0ffffff', location: location() }; }
-  / 'lightgoldenrodyellow' { return { term: 'Color', value: 'fafad2ff', location: location() }; }
-  / 'LightGoldenRodYellow' { return { term: 'Color', value: 'fafad2ff', location: location() }; }
-  / 'lightgray'            { return { term: 'Color', value: 'd3d3d3ff', location: location() }; }
-  / 'LightGray'            { return { term: 'Color', value: 'd3d3d3ff', location: location() }; }
-  / 'lightgrey'            { return { term: 'Color', value: 'd3d3d3ff', location: location() }; }
-  / 'LightGrey'            { return { term: 'Color', value: 'd3d3d3ff', location: location() }; }
-  / 'lightgreen'           { return { term: 'Color', value: '90ee90ff', location: location() }; }
-  / 'LightGreen'           { return { term: 'Color', value: '90ee90ff', location: location() }; }
-  / 'lightpink'            { return { term: 'Color', value: 'ffb6c1ff', location: location() }; }
-  / 'LightPink'            { return { term: 'Color', value: 'ffb6c1ff', location: location() }; }
-  / 'lightsalmon'          { return { term: 'Color', value: 'ffa07aff', location: location() }; }
-  / 'LightSalmon'          { return { term: 'Color', value: 'ffa07aff', location: location() }; }
-  / 'lightseagreen'        { return { term: 'Color', value: '20b2aaff', location: location() }; }
-  / 'LightSeaGreen'        { return { term: 'Color', value: '20b2aaff', location: location() }; }
-  / 'lightskyblue'         { return { term: 'Color', value: '87cefaff', location: location() }; }
-  / 'LightSkyBlue'         { return { term: 'Color', value: '87cefaff', location: location() }; }
-  / 'lightslategray'       { return { term: 'Color', value: '778899ff', location: location() }; }
-  / 'LightSlateGray'       { return { term: 'Color', value: '778899ff', location: location() }; }
-  / 'lightslategrey'       { return { term: 'Color', value: '778899ff', location: location() }; }
-  / 'LightSlateGrey'       { return { term: 'Color', value: '778899ff', location: location() }; }
-  / 'lightsteelblue'       { return { term: 'Color', value: 'b0c4deff', location: location() }; }
-  / 'LightSteelBlue'       { return { term: 'Color', value: 'b0c4deff', location: location() }; }
-  / 'lightyellow'          { return { term: 'Color', value: 'ffffe0ff', location: location() }; }
-  / 'LightYellow'          { return { term: 'Color', value: 'ffffe0ff', location: location() }; }
-  / 'lime'                 { return { term: 'Color', value: '00ff00ff', location: location() }; }
-  / 'Lime'                 { return { term: 'Color', value: '00ff00ff', location: location() }; }
-  / 'limegreen'            { return { term: 'Color', value: '32cd32ff', location: location() }; }
-  / 'LimeGreen'            { return { term: 'Color', value: '32cd32ff', location: location() }; }
-  / 'linen'                { return { term: 'Color', value: 'faf0e6ff', location: location() }; }
-  / 'Linen'                { return { term: 'Color', value: 'faf0e6ff', location: location() }; }
-  / 'magenta'              { return { term: 'Color', value: 'ff00ffff', location: location() }; }
-  / 'Magenta'              { return { term: 'Color', value: 'ff00ffff', location: location() }; }
-  / 'maroon'               { return { term: 'Color', value: '800000ff', location: location() }; }
-  / 'Maroon'               { return { term: 'Color', value: '800000ff', location: location() }; }
-  / 'mediumaquamarine'     { return { term: 'Color', value: '66cdaaff', location: location() }; }
-  / 'MediumAquaMarine'     { return { term: 'Color', value: '66cdaaff', location: location() }; }
-  / 'mediumblue'           { return { term: 'Color', value: '0000cdff', location: location() }; }
-  / 'MediumBlue'           { return { term: 'Color', value: '0000cdff', location: location() }; }
-  / 'mediumorchid'         { return { term: 'Color', value: 'ba55d3ff', location: location() }; }
-  / 'MediumOrchid'         { return { term: 'Color', value: 'ba55d3ff', location: location() }; }
-  / 'mediumpurple'         { return { term: 'Color', value: '9370d8ff', location: location() }; }
-  / 'MediumPurple'         { return { term: 'Color', value: '9370d8ff', location: location() }; }
-  / 'mediumseagreen'       { return { term: 'Color', value: '3cb371ff', location: location() }; }
-  / 'MediumSeaGreen'       { return { term: 'Color', value: '3cb371ff', location: location() }; }
-  / 'mediumslateblue'      { return { term: 'Color', value: '7b68eeff', location: location() }; }
-  / 'MediumSlateBlue'      { return { term: 'Color', value: '7b68eeff', location: location() }; }
-  / 'mediumspringgreen'    { return { term: 'Color', value: '00fa9aff', location: location() }; }
-  / 'MediumSpringGreen'    { return { term: 'Color', value: '00fa9aff', location: location() }; }
-  / 'mediumturquoise'      { return { term: 'Color', value: '48d1ccff', location: location() }; }
-  / 'MediumTurquoise'      { return { term: 'Color', value: '48d1ccff', location: location() }; }
-  / 'mediumvioletred'      { return { term: 'Color', value: 'c71585ff', location: location() }; }
-  / 'MediumVioletRed'      { return { term: 'Color', value: 'c71585ff', location: location() }; }
-  / 'midnightblue'         { return { term: 'Color', value: '191970ff', location: location() }; }
-  / 'MidnightBlue'         { return { term: 'Color', value: '191970ff', location: location() }; }
-  / 'mintcream'            { return { term: 'Color', value: 'f5fffaff', location: location() }; }
-  / 'MintCream'            { return { term: 'Color', value: 'f5fffaff', location: location() }; }
-  / 'mistyrose'            { return { term: 'Color', value: 'ffe4e1ff', location: location() }; }
-  / 'MistyRose'            { return { term: 'Color', value: 'ffe4e1ff', location: location() }; }
-  / 'moccasin'             { return { term: 'Color', value: 'ffe4b5ff', location: location() }; }
-  / 'Moccasin'             { return { term: 'Color', value: 'ffe4b5ff', location: location() }; }
-  / 'navajowhite'          { return { term: 'Color', value: 'ffdeadff', location: location() }; }
-  / 'NavajoWhite'          { return { term: 'Color', value: 'ffdeadff', location: location() }; }
-  / 'navy'                 { return { term: 'Color', value: '000080ff', location: location() }; }
-  / 'Navy'                 { return { term: 'Color', value: '000080ff', location: location() }; }
-  / 'oldlace'              { return { term: 'Color', value: 'fdf5e6ff', location: location() }; }
-  / 'OldLace'              { return { term: 'Color', value: 'fdf5e6ff', location: location() }; }
-  / 'olive'                { return { term: 'Color', value: '808000ff', location: location() }; }
-  / 'Olive'                { return { term: 'Color', value: '808000ff', location: location() }; }
-  / 'olivedrab'            { return { term: 'Color', value: '6b8e23ff', location: location() }; }
-  / 'OliveDrab'            { return { term: 'Color', value: '6b8e23ff', location: location() }; }
-  / 'orange'               { return { term: 'Color', value: 'ffa500ff', location: location() }; }
-  / 'Orange'               { return { term: 'Color', value: 'ffa500ff', location: location() }; }
-  / 'orangered'            { return { term: 'Color', value: 'ff4500ff', location: location() }; }
-  / 'OrangeRed'            { return { term: 'Color', value: 'ff4500ff', location: location() }; }
-  / 'orchid'               { return { term: 'Color', value: 'da70d6ff', location: location() }; }
-  / 'Orchid'               { return { term: 'Color', value: 'da70d6ff', location: location() }; }
-  / 'palegoldenrod'        { return { term: 'Color', value: 'eee8aaff', location: location() }; }
-  / 'PaleGoldenRod'        { return { term: 'Color', value: 'eee8aaff', location: location() }; }
-  / 'palegreen'            { return { term: 'Color', value: '98fb98ff', location: location() }; }
-  / 'PaleGreen'            { return { term: 'Color', value: '98fb98ff', location: location() }; }
-  / 'paleturquoise'        { return { term: 'Color', value: 'afeeeeff', location: location() }; }
-  / 'PaleTurquoise'        { return { term: 'Color', value: 'afeeeeff', location: location() }; }
-  / 'palevioletred'        { return { term: 'Color', value: 'd87093ff', location: location() }; }
-  / 'PaleVioletRed'        { return { term: 'Color', value: 'd87093ff', location: location() }; }
-  / 'papayawhip'           { return { term: 'Color', value: 'ffefd5ff', location: location() }; }
-  / 'PapayaWhip'           { return { term: 'Color', value: 'ffefd5ff', location: location() }; }
-  / 'peachpuff'            { return { term: 'Color', value: 'ffdab9ff', location: location() }; }
-  / 'PeachPuff'            { return { term: 'Color', value: 'ffdab9ff', location: location() }; }
-  / 'peru'                 { return { term: 'Color', value: 'cd853fff', location: location() }; }
-  / 'Peru'                 { return { term: 'Color', value: 'cd853fff', location: location() }; }
-  / 'pink'                 { return { term: 'Color', value: 'ffc0cbff', location: location() }; }
-  / 'Pink'                 { return { term: 'Color', value: 'ffc0cbff', location: location() }; }
-  / 'plum'                 { return { term: 'Color', value: 'dda0ddff', location: location() }; }
-  / 'Plum'                 { return { term: 'Color', value: 'dda0ddff', location: location() }; }
-  / 'powderblue'           { return { term: 'Color', value: 'b0e0e6ff', location: location() }; }
-  / 'PowderBlue'           { return { term: 'Color', value: 'b0e0e6ff', location: location() }; }
-  / 'purple'               { return { term: 'Color', value: '800080ff', location: location() }; }
-  / 'Purple'               { return { term: 'Color', value: '800080ff', location: location() }; }
-  / 'red'                  { return { term: 'Color', value: 'ff0000ff', location: location() }; }
-  / 'Red'                  { return { term: 'Color', value: 'ff0000ff', location: location() }; }
-  / 'rosybrown'            { return { term: 'Color', value: 'bc8f8fff', location: location() }; }
-  / 'RosyBrown'            { return { term: 'Color', value: 'bc8f8fff', location: location() }; }
-  / 'royalblue'            { return { term: 'Color', value: '4169e1ff', location: location() }; }
-  / 'RoyalBlue'            { return { term: 'Color', value: '4169e1ff', location: location() }; }
-  / 'saddlebrown'          { return { term: 'Color', value: '8b4513ff', location: location() }; }
-  / 'SaddleBrown'          { return { term: 'Color', value: '8b4513ff', location: location() }; }
-  / 'salmon'               { return { term: 'Color', value: 'fa8072ff', location: location() }; }
-  / 'Salmon'               { return { term: 'Color', value: 'fa8072ff', location: location() }; }
-  / 'sandybrown'           { return { term: 'Color', value: 'f4a460ff', location: location() }; }
-  / 'SandyBrown'           { return { term: 'Color', value: 'f4a460ff', location: location() }; }
-  / 'seagreen'             { return { term: 'Color', value: '2e8b57ff', location: location() }; }
-  / 'SeaGreen'             { return { term: 'Color', value: '2e8b57ff', location: location() }; }
-  / 'seashell'             { return { term: 'Color', value: 'fff5eeff', location: location() }; }
-  / 'SeaShell'             { return { term: 'Color', value: 'fff5eeff', location: location() }; }
-  / 'sienna'               { return { term: 'Color', value: 'a0522dff', location: location() }; }
-  / 'Sienna'               { return { term: 'Color', value: 'a0522dff', location: location() }; }
-  / 'silver'               { return { term: 'Color', value: 'c0c0c0ff', location: location() }; }
-  / 'Silver'               { return { term: 'Color', value: 'c0c0c0ff', location: location() }; }
-  / 'skyblue'              { return { term: 'Color', value: '87ceebff', location: location() }; }
-  / 'SkyBlue'              { return { term: 'Color', value: '87ceebff', location: location() }; }
-  / 'slateblue'            { return { term: 'Color', value: '6a5acdff', location: location() }; }
-  / 'SlateBlue'            { return { term: 'Color', value: '6a5acdff', location: location() }; }
-  / 'slategray'            { return { term: 'Color', value: '708090ff', location: location() }; }
-  / 'SlateGray'            { return { term: 'Color', value: '708090ff', location: location() }; }
-  / 'slategrey'            { return { term: 'Color', value: '708090ff', location: location() }; }
-  / 'SlateGrey'            { return { term: 'Color', value: '708090ff', location: location() }; }
-  / 'snow'                 { return { term: 'Color', value: 'fffafaff', location: location() }; }
-  / 'Snow'                 { return { term: 'Color', value: 'fffafaff', location: location() }; }
-  / 'springgreen'          { return { term: 'Color', value: '00ff7fff', location: location() }; }
-  / 'SpringGreen'          { return { term: 'Color', value: '00ff7fff', location: location() }; }
-  / 'steelblue'            { return { term: 'Color', value: '4682b4ff', location: location() }; }
-  / 'SteelBlue'            { return { term: 'Color', value: '4682b4ff', location: location() }; }
-  / 'tan'                  { return { term: 'Color', value: 'd2b48cff', location: location() }; }
-  / 'Tan'                  { return { term: 'Color', value: 'd2b48cff', location: location() }; }
-  / 'teal'                 { return { term: 'Color', value: '008080ff', location: location() }; }
-  / 'Teal'                 { return { term: 'Color', value: '008080ff', location: location() }; }
-  / 'thistle'              { return { term: 'Color', value: 'd8bfd8ff', location: location() }; }
-  / 'Thistle'              { return { term: 'Color', value: 'd8bfd8ff', location: location() }; }
-  / 'tomato'               { return { term: 'Color', value: 'ff6347ff', location: location() }; }
-  / 'Tomato'               { return { term: 'Color', value: 'ff6347ff', location: location() }; }
-  / 'turquoise'            { return { term: 'Color', value: '40e0d0ff', location: location() }; }
-  / 'Turquoise'            { return { term: 'Color', value: '40e0d0ff', location: location() }; }
-  / 'violet'               { return { term: 'Color', value: 'ee82eeff', location: location() }; }
-  / 'Violet'               { return { term: 'Color', value: 'ee82eeff', location: location() }; }
-  / 'wheat'                { return { term: 'Color', value: 'f5deb3ff', location: location() }; }
-  / 'Wheat'                { return { term: 'Color', value: 'f5deb3ff', location: location() }; }
-  / 'white'                { return { term: 'Color', value: 'ffffffff', location: location() }; }
-  / 'White'                { return { term: 'Color', value: 'ffffffff', location: location() }; }
-  / 'whitesmoke'           { return { term: 'Color', value: 'f5f5f5ff', location: location() }; }
-  / 'WhiteSmoke'           { return { term: 'Color', value: 'f5f5f5ff', location: location() }; }
-  / 'yellow'               { return { term: 'Color', value: 'ffff00ff', location: location() }; }
-  / 'Yellow'               { return { term: 'Color', value: 'ffff00ff', location: location() }; }
-  / 'yellowgreen'          { return { term: 'Color', value: '9acd32ff', location: location() }; }
-  / 'YellowGreen'          { return { term: 'Color', value: '9acd32ff', location: location() }; }
+  = 'aliceblue'            { return { term: 'color', value: 'f0f8ffff', location: location() }; }
+  / 'AliceBlue'            { return { term: 'color', value: 'f0f8ffff', location: location() }; }
+  / 'antiquewhite'         { return { term: 'color', value: 'faebd7ff', location: location() }; }
+  / 'AntiqueWhite'         { return { term: 'color', value: 'faebd7ff', location: location() }; }
+  / 'aqua'                 { return { term: 'color', value: '00ffffff', location: location() }; }
+  / 'Aqua'                 { return { term: 'color', value: '00ffffff', location: location() }; }
+  / 'aquamarine'           { return { term: 'color', value: '7fffd4ff', location: location() }; }
+  / 'Aquamarine'           { return { term: 'color', value: '7fffd4ff', location: location() }; }
+  / 'azure'                { return { term: 'color', value: 'f0ffffff', location: location() }; }
+  / 'Azure'                { return { term: 'color', value: 'f0ffffff', location: location() }; }
+  / 'beige'                { return { term: 'color', value: 'f5f5dcff', location: location() }; }
+  / 'Beige'                { return { term: 'color', value: 'f5f5dcff', location: location() }; }
+  / 'bisque'               { return { term: 'color', value: 'ffe4c4ff', location: location() }; }
+  / 'Bisque'               { return { term: 'color', value: 'ffe4c4ff', location: location() }; }
+  / 'black'                { return { term: 'color', value: '000000ff', location: location() }; }
+  / 'Black'                { return { term: 'color', value: '000000ff', location: location() }; }
+  / 'blanchedalmond'       { return { term: 'color', value: 'ffebcdff', location: location() }; }
+  / 'BlanchedAlmond'       { return { term: 'color', value: 'ffebcdff', location: location() }; }
+  / 'blue'                 { return { term: 'color', value: '0000ffff', location: location() }; }
+  / 'Blue'                 { return { term: 'color', value: '0000ffff', location: location() }; }
+  / 'blueviolet'           { return { term: 'color', value: '8a2be2ff', location: location() }; }
+  / 'BlueViolet'           { return { term: 'color', value: '8a2be2ff', location: location() }; }
+  / 'brown'                { return { term: 'color', value: 'a52a2aff', location: location() }; }
+  / 'Brown'                { return { term: 'color', value: 'a52a2aff', location: location() }; }
+  / 'burlywood'            { return { term: 'color', value: 'deb887ff', location: location() }; }
+  / 'BurlyWood'            { return { term: 'color', value: 'deb887ff', location: location() }; }
+  / 'cadetblue'            { return { term: 'color', value: '5f9ea0ff', location: location() }; }
+  / 'CadetBlue'            { return { term: 'color', value: '5f9ea0ff', location: location() }; }
+  / 'chartreuse'           { return { term: 'color', value: '7fff00ff', location: location() }; }
+  / 'Chartreuse'           { return { term: 'color', value: '7fff00ff', location: location() }; }
+  / 'chocolate'            { return { term: 'color', value: 'd2691eff', location: location() }; }
+  / 'Chocolate'            { return { term: 'color', value: 'd2691eff', location: location() }; }
+  / 'coral'                { return { term: 'color', value: 'ff7f50ff', location: location() }; }
+  / 'Coral'                { return { term: 'color', value: 'ff7f50ff', location: location() }; }
+  / 'cornflowerblue'       { return { term: 'color', value: '6495edff', location: location() }; }
+  / 'CornflowerBlue'       { return { term: 'color', value: '6495edff', location: location() }; }
+  / 'cornsilk'             { return { term: 'color', value: 'fff8dcff', location: location() }; }
+  / 'Cornsilk'             { return { term: 'color', value: 'fff8dcff', location: location() }; }
+  / 'crimson'              { return { term: 'color', value: 'dc143cff', location: location() }; }
+  / 'Crimson'              { return { term: 'color', value: 'dc143cff', location: location() }; }
+  / 'cyan'                 { return { term: 'color', value: '00ffffff', location: location() }; }
+  / 'Cyan'                 { return { term: 'color', value: '00ffffff', location: location() }; }
+  / 'darkblue'             { return { term: 'color', value: '00008bff', location: location() }; }
+  / 'DarkBlue'             { return { term: 'color', value: '00008bff', location: location() }; }
+  / 'darkcyan'             { return { term: 'color', value: '008b8bff', location: location() }; }
+  / 'DarkCyan'             { return { term: 'color', value: '008b8bff', location: location() }; }
+  / 'darkgoldenrod'        { return { term: 'color', value: 'b8860bff', location: location() }; }
+  / 'DarkGoldenRod'        { return { term: 'color', value: 'b8860bff', location: location() }; }
+  / 'darkgray'             { return { term: 'color', value: 'a9a9a9ff', location: location() }; }
+  / 'DarkGray'             { return { term: 'color', value: 'a9a9a9ff', location: location() }; }
+  / 'darkgrey'             { return { term: 'color', value: 'a9a9a9ff', location: location() }; }
+  / 'DarkGrey'             { return { term: 'color', value: 'a9a9a9ff', location: location() }; }
+  / 'darkgreen'            { return { term: 'color', value: '006400ff', location: location() }; }
+  / 'DarkGreen'            { return { term: 'color', value: '006400ff', location: location() }; }
+  / 'darkkhaki'            { return { term: 'color', value: 'bdb76bff', location: location() }; }
+  / 'DarkKhaki'            { return { term: 'color', value: 'bdb76bff', location: location() }; }
+  / 'darkmagenta'          { return { term: 'color', value: '8b008bff', location: location() }; }
+  / 'DarkMagenta'          { return { term: 'color', value: '8b008bff', location: location() }; }
+  / 'darkolivegreen'       { return { term: 'color', value: '556b2fff', location: location() }; }
+  / 'DarkOliveGreen'       { return { term: 'color', value: '556b2fff', location: location() }; }
+  / 'darkorange'           { return { term: 'color', value: 'ff8c00ff', location: location() }; }
+  / 'Darkorange'           { return { term: 'color', value: 'ff8c00ff', location: location() }; }
+  / 'darkorchid'           { return { term: 'color', value: '9932ccff', location: location() }; }
+  / 'DarkOrchid'           { return { term: 'color', value: '9932ccff', location: location() }; }
+  / 'darkred'              { return { term: 'color', value: '8b0000ff', location: location() }; }
+  / 'DarkRed'              { return { term: 'color', value: '8b0000ff', location: location() }; }
+  / 'darksalmon'           { return { term: 'color', value: 'e9967aff', location: location() }; }
+  / 'DarkSalmon'           { return { term: 'color', value: 'e9967aff', location: location() }; }
+  / 'darkseagreen'         { return { term: 'color', value: '8fbc8fff', location: location() }; }
+  / 'DarkSeaGreen'         { return { term: 'color', value: '8fbc8fff', location: location() }; }
+  / 'darkslateblue'        { return { term: 'color', value: '483d8bff', location: location() }; }
+  / 'DarkSlateBlue'        { return { term: 'color', value: '483d8bff', location: location() }; }
+  / 'darkslategray'        { return { term: 'color', value: '2f4f4fff', location: location() }; }
+  / 'DarkSlateGray'        { return { term: 'color', value: '2f4f4fff', location: location() }; }
+  / 'darkslategrey'        { return { term: 'color', value: '2f4f4fff', location: location() }; }
+  / 'DarkSlateGrey'        { return { term: 'color', value: '2f4f4fff', location: location() }; }
+  / 'darkturquoise'        { return { term: 'color', value: '00ced1ff', location: location() }; }
+  / 'DarkTurquoise'        { return { term: 'color', value: '00ced1ff', location: location() }; }
+  / 'darkviolet'           { return { term: 'color', value: '9400d3ff', location: location() }; }
+  / 'DarkViolet'           { return { term: 'color', value: '9400d3ff', location: location() }; }
+  / 'deeppink'             { return { term: 'color', value: 'ff1493ff', location: location() }; }
+  / 'DeepPink'             { return { term: 'color', value: 'ff1493ff', location: location() }; }
+  / 'deepskyblue'          { return { term: 'color', value: '00bfffff', location: location() }; }
+  / 'DeepSkyBlue'          { return { term: 'color', value: '00bfffff', location: location() }; }
+  / 'dimgray'              { return { term: 'color', value: '696969ff', location: location() }; }
+  / 'DimGray'              { return { term: 'color', value: '696969ff', location: location() }; }
+  / 'dimgrey'              { return { term: 'color', value: '696969ff', location: location() }; }
+  / 'DimGrey'              { return { term: 'color', value: '696969ff', location: location() }; }
+  / 'dodgerblue'           { return { term: 'color', value: '1e90ffff', location: location() }; }
+  / 'DodgerBlue'           { return { term: 'color', value: '1e90ffff', location: location() }; }
+  / 'firebrick'            { return { term: 'color', value: 'b22222ff', location: location() }; }
+  / 'FireBrick'            { return { term: 'color', value: 'b22222ff', location: location() }; }
+  / 'floralwhite'          { return { term: 'color', value: 'fffaf0ff', location: location() }; }
+  / 'FloralWhite'          { return { term: 'color', value: 'fffaf0ff', location: location() }; }
+  / 'forestgreen'          { return { term: 'color', value: '228b22ff', location: location() }; }
+  / 'ForestGreen'          { return { term: 'color', value: '228b22ff', location: location() }; }
+  / 'fuchsia'              { return { term: 'color', value: 'ff00ffff', location: location() }; }
+  / 'Fuchsia'              { return { term: 'color', value: 'ff00ffff', location: location() }; }
+  / 'gainsboro'            { return { term: 'color', value: 'dcdcdcff', location: location() }; }
+  / 'Gainsboro'            { return { term: 'color', value: 'dcdcdcff', location: location() }; }
+  / 'ghostwhite'           { return { term: 'color', value: 'f8f8ffff', location: location() }; }
+  / 'GhostWhite'           { return { term: 'color', value: 'f8f8ffff', location: location() }; }
+  / 'gold'                 { return { term: 'color', value: 'ffd700ff', location: location() }; }
+  / 'Gold'                 { return { term: 'color', value: 'ffd700ff', location: location() }; }
+  / 'goldenrod'            { return { term: 'color', value: 'daa520ff', location: location() }; }
+  / 'GoldenRod'            { return { term: 'color', value: 'daa520ff', location: location() }; }
+  / 'gray'                 { return { term: 'color', value: '808080ff', location: location() }; }
+  / 'Gray'                 { return { term: 'color', value: '808080ff', location: location() }; }
+  / 'grey'                 { return { term: 'color', value: '808080ff', location: location() }; }
+  / 'Grey'                 { return { term: 'color', value: '808080ff', location: location() }; }
+  / 'green'                { return { term: 'color', value: '008000ff', location: location() }; }
+  / 'Green'                { return { term: 'color', value: '008000ff', location: location() }; }
+  / 'greenyellow'          { return { term: 'color', value: 'adff2fff', location: location() }; }
+  / 'GreenYellow'          { return { term: 'color', value: 'adff2fff', location: location() }; }
+  / 'honeydew'             { return { term: 'color', value: 'f0fff0ff', location: location() }; }
+  / 'HoneyDew'             { return { term: 'color', value: 'f0fff0ff', location: location() }; }
+  / 'hotpink'              { return { term: 'color', value: 'ff69b4ff', location: location() }; }
+  / 'HotPink'              { return { term: 'color', value: 'ff69b4ff', location: location() }; }
+  / 'indianred'            { return { term: 'color', value: 'cd5c5cff', location: location() }; }
+  / 'IndianRed'            { return { term: 'color', value: 'cd5c5cff', location: location() }; }
+  / 'indigo'               { return { term: 'color', value: '4b0082ff', location: location() }; }
+  / 'Indigo'               { return { term: 'color', value: '4b0082ff', location: location() }; }
+  / 'ivory'                { return { term: 'color', value: 'fffff0ff', location: location() }; }
+  / 'Ivory'                { return { term: 'color', value: 'fffff0ff', location: location() }; }
+  / 'khaki'                { return { term: 'color', value: 'f0e68cff', location: location() }; }
+  / 'Khaki'                { return { term: 'color', value: 'f0e68cff', location: location() }; }
+  / 'lavender'             { return { term: 'color', value: 'e6e6faff', location: location() }; }
+  / 'Lavender'             { return { term: 'color', value: 'e6e6faff', location: location() }; }
+  / 'lavenderblush'        { return { term: 'color', value: 'fff0f5ff', location: location() }; }
+  / 'LavenderBlush'        { return { term: 'color', value: 'fff0f5ff', location: location() }; }
+  / 'lawngreen'            { return { term: 'color', value: '7cfc00ff', location: location() }; }
+  / 'LawnGreen'            { return { term: 'color', value: '7cfc00ff', location: location() }; }
+  / 'lemonchiffon'         { return { term: 'color', value: 'fffacdff', location: location() }; }
+  / 'LemonChiffon'         { return { term: 'color', value: 'fffacdff', location: location() }; }
+  / 'lightblue'            { return { term: 'color', value: 'add8e6ff', location: location() }; }
+  / 'LightBlue'            { return { term: 'color', value: 'add8e6ff', location: location() }; }
+  / 'lightcoral'           { return { term: 'color', value: 'f08080ff', location: location() }; }
+  / 'LightCoral'           { return { term: 'color', value: 'f08080ff', location: location() }; }
+  / 'lightcyan'            { return { term: 'color', value: 'e0ffffff', location: location() }; }
+  / 'LightCyan'            { return { term: 'color', value: 'e0ffffff', location: location() }; }
+  / 'lightgoldenrodyellow' { return { term: 'color', value: 'fafad2ff', location: location() }; }
+  / 'LightGoldenRodYellow' { return { term: 'color', value: 'fafad2ff', location: location() }; }
+  / 'lightgray'            { return { term: 'color', value: 'd3d3d3ff', location: location() }; }
+  / 'LightGray'            { return { term: 'color', value: 'd3d3d3ff', location: location() }; }
+  / 'lightgrey'            { return { term: 'color', value: 'd3d3d3ff', location: location() }; }
+  / 'LightGrey'            { return { term: 'color', value: 'd3d3d3ff', location: location() }; }
+  / 'lightgreen'           { return { term: 'color', value: '90ee90ff', location: location() }; }
+  / 'LightGreen'           { return { term: 'color', value: '90ee90ff', location: location() }; }
+  / 'lightpink'            { return { term: 'color', value: 'ffb6c1ff', location: location() }; }
+  / 'LightPink'            { return { term: 'color', value: 'ffb6c1ff', location: location() }; }
+  / 'lightsalmon'          { return { term: 'color', value: 'ffa07aff', location: location() }; }
+  / 'LightSalmon'          { return { term: 'color', value: 'ffa07aff', location: location() }; }
+  / 'lightseagreen'        { return { term: 'color', value: '20b2aaff', location: location() }; }
+  / 'LightSeaGreen'        { return { term: 'color', value: '20b2aaff', location: location() }; }
+  / 'lightskyblue'         { return { term: 'color', value: '87cefaff', location: location() }; }
+  / 'LightSkyBlue'         { return { term: 'color', value: '87cefaff', location: location() }; }
+  / 'lightslategray'       { return { term: 'color', value: '778899ff', location: location() }; }
+  / 'LightSlateGray'       { return { term: 'color', value: '778899ff', location: location() }; }
+  / 'lightslategrey'       { return { term: 'color', value: '778899ff', location: location() }; }
+  / 'LightSlateGrey'       { return { term: 'color', value: '778899ff', location: location() }; }
+  / 'lightsteelblue'       { return { term: 'color', value: 'b0c4deff', location: location() }; }
+  / 'LightSteelBlue'       { return { term: 'color', value: 'b0c4deff', location: location() }; }
+  / 'lightyellow'          { return { term: 'color', value: 'ffffe0ff', location: location() }; }
+  / 'LightYellow'          { return { term: 'color', value: 'ffffe0ff', location: location() }; }
+  / 'lime'                 { return { term: 'color', value: '00ff00ff', location: location() }; }
+  / 'Lime'                 { return { term: 'color', value: '00ff00ff', location: location() }; }
+  / 'limegreen'            { return { term: 'color', value: '32cd32ff', location: location() }; }
+  / 'LimeGreen'            { return { term: 'color', value: '32cd32ff', location: location() }; }
+  / 'linen'                { return { term: 'color', value: 'faf0e6ff', location: location() }; }
+  / 'Linen'                { return { term: 'color', value: 'faf0e6ff', location: location() }; }
+  / 'magenta'              { return { term: 'color', value: 'ff00ffff', location: location() }; }
+  / 'Magenta'              { return { term: 'color', value: 'ff00ffff', location: location() }; }
+  / 'maroon'               { return { term: 'color', value: '800000ff', location: location() }; }
+  / 'Maroon'               { return { term: 'color', value: '800000ff', location: location() }; }
+  / 'mediumaquamarine'     { return { term: 'color', value: '66cdaaff', location: location() }; }
+  / 'MediumAquaMarine'     { return { term: 'color', value: '66cdaaff', location: location() }; }
+  / 'mediumblue'           { return { term: 'color', value: '0000cdff', location: location() }; }
+  / 'MediumBlue'           { return { term: 'color', value: '0000cdff', location: location() }; }
+  / 'mediumorchid'         { return { term: 'color', value: 'ba55d3ff', location: location() }; }
+  / 'MediumOrchid'         { return { term: 'color', value: 'ba55d3ff', location: location() }; }
+  / 'mediumpurple'         { return { term: 'color', value: '9370d8ff', location: location() }; }
+  / 'MediumPurple'         { return { term: 'color', value: '9370d8ff', location: location() }; }
+  / 'mediumseagreen'       { return { term: 'color', value: '3cb371ff', location: location() }; }
+  / 'MediumSeaGreen'       { return { term: 'color', value: '3cb371ff', location: location() }; }
+  / 'mediumslateblue'      { return { term: 'color', value: '7b68eeff', location: location() }; }
+  / 'MediumSlateBlue'      { return { term: 'color', value: '7b68eeff', location: location() }; }
+  / 'mediumspringgreen'    { return { term: 'color', value: '00fa9aff', location: location() }; }
+  / 'MediumSpringGreen'    { return { term: 'color', value: '00fa9aff', location: location() }; }
+  / 'mediumturquoise'      { return { term: 'color', value: '48d1ccff', location: location() }; }
+  / 'MediumTurquoise'      { return { term: 'color', value: '48d1ccff', location: location() }; }
+  / 'mediumvioletred'      { return { term: 'color', value: 'c71585ff', location: location() }; }
+  / 'MediumVioletRed'      { return { term: 'color', value: 'c71585ff', location: location() }; }
+  / 'midnightblue'         { return { term: 'color', value: '191970ff', location: location() }; }
+  / 'MidnightBlue'         { return { term: 'color', value: '191970ff', location: location() }; }
+  / 'mintcream'            { return { term: 'color', value: 'f5fffaff', location: location() }; }
+  / 'MintCream'            { return { term: 'color', value: 'f5fffaff', location: location() }; }
+  / 'mistyrose'            { return { term: 'color', value: 'ffe4e1ff', location: location() }; }
+  / 'MistyRose'            { return { term: 'color', value: 'ffe4e1ff', location: location() }; }
+  / 'moccasin'             { return { term: 'color', value: 'ffe4b5ff', location: location() }; }
+  / 'Moccasin'             { return { term: 'color', value: 'ffe4b5ff', location: location() }; }
+  / 'navajowhite'          { return { term: 'color', value: 'ffdeadff', location: location() }; }
+  / 'NavajoWhite'          { return { term: 'color', value: 'ffdeadff', location: location() }; }
+  / 'navy'                 { return { term: 'color', value: '000080ff', location: location() }; }
+  / 'Navy'                 { return { term: 'color', value: '000080ff', location: location() }; }
+  / 'oldlace'              { return { term: 'color', value: 'fdf5e6ff', location: location() }; }
+  / 'OldLace'              { return { term: 'color', value: 'fdf5e6ff', location: location() }; }
+  / 'olive'                { return { term: 'color', value: '808000ff', location: location() }; }
+  / 'Olive'                { return { term: 'color', value: '808000ff', location: location() }; }
+  / 'olivedrab'            { return { term: 'color', value: '6b8e23ff', location: location() }; }
+  / 'OliveDrab'            { return { term: 'color', value: '6b8e23ff', location: location() }; }
+  / 'orange'               { return { term: 'color', value: 'ffa500ff', location: location() }; }
+  / 'Orange'               { return { term: 'color', value: 'ffa500ff', location: location() }; }
+  / 'orangered'            { return { term: 'color', value: 'ff4500ff', location: location() }; }
+  / 'OrangeRed'            { return { term: 'color', value: 'ff4500ff', location: location() }; }
+  / 'orchid'               { return { term: 'color', value: 'da70d6ff', location: location() }; }
+  / 'Orchid'               { return { term: 'color', value: 'da70d6ff', location: location() }; }
+  / 'palegoldenrod'        { return { term: 'color', value: 'eee8aaff', location: location() }; }
+  / 'PaleGoldenRod'        { return { term: 'color', value: 'eee8aaff', location: location() }; }
+  / 'palegreen'            { return { term: 'color', value: '98fb98ff', location: location() }; }
+  / 'PaleGreen'            { return { term: 'color', value: '98fb98ff', location: location() }; }
+  / 'paleturquoise'        { return { term: 'color', value: 'afeeeeff', location: location() }; }
+  / 'PaleTurquoise'        { return { term: 'color', value: 'afeeeeff', location: location() }; }
+  / 'palevioletred'        { return { term: 'color', value: 'd87093ff', location: location() }; }
+  / 'PaleVioletRed'        { return { term: 'color', value: 'd87093ff', location: location() }; }
+  / 'papayawhip'           { return { term: 'color', value: 'ffefd5ff', location: location() }; }
+  / 'PapayaWhip'           { return { term: 'color', value: 'ffefd5ff', location: location() }; }
+  / 'peachpuff'            { return { term: 'color', value: 'ffdab9ff', location: location() }; }
+  / 'PeachPuff'            { return { term: 'color', value: 'ffdab9ff', location: location() }; }
+  / 'peru'                 { return { term: 'color', value: 'cd853fff', location: location() }; }
+  / 'Peru'                 { return { term: 'color', value: 'cd853fff', location: location() }; }
+  / 'pink'                 { return { term: 'color', value: 'ffc0cbff', location: location() }; }
+  / 'Pink'                 { return { term: 'color', value: 'ffc0cbff', location: location() }; }
+  / 'plum'                 { return { term: 'color', value: 'dda0ddff', location: location() }; }
+  / 'Plum'                 { return { term: 'color', value: 'dda0ddff', location: location() }; }
+  / 'powderblue'           { return { term: 'color', value: 'b0e0e6ff', location: location() }; }
+  / 'PowderBlue'           { return { term: 'color', value: 'b0e0e6ff', location: location() }; }
+  / 'purple'               { return { term: 'color', value: '800080ff', location: location() }; }
+  / 'Purple'               { return { term: 'color', value: '800080ff', location: location() }; }
+  / 'red'                  { return { term: 'color', value: 'ff0000ff', location: location() }; }
+  / 'Red'                  { return { term: 'color', value: 'ff0000ff', location: location() }; }
+  / 'rosybrown'            { return { term: 'color', value: 'bc8f8fff', location: location() }; }
+  / 'RosyBrown'            { return { term: 'color', value: 'bc8f8fff', location: location() }; }
+  / 'royalblue'            { return { term: 'color', value: '4169e1ff', location: location() }; }
+  / 'RoyalBlue'            { return { term: 'color', value: '4169e1ff', location: location() }; }
+  / 'saddlebrown'          { return { term: 'color', value: '8b4513ff', location: location() }; }
+  / 'SaddleBrown'          { return { term: 'color', value: '8b4513ff', location: location() }; }
+  / 'salmon'               { return { term: 'color', value: 'fa8072ff', location: location() }; }
+  / 'Salmon'               { return { term: 'color', value: 'fa8072ff', location: location() }; }
+  / 'sandybrown'           { return { term: 'color', value: 'f4a460ff', location: location() }; }
+  / 'SandyBrown'           { return { term: 'color', value: 'f4a460ff', location: location() }; }
+  / 'seagreen'             { return { term: 'color', value: '2e8b57ff', location: location() }; }
+  / 'SeaGreen'             { return { term: 'color', value: '2e8b57ff', location: location() }; }
+  / 'seashell'             { return { term: 'color', value: 'fff5eeff', location: location() }; }
+  / 'SeaShell'             { return { term: 'color', value: 'fff5eeff', location: location() }; }
+  / 'sienna'               { return { term: 'color', value: 'a0522dff', location: location() }; }
+  / 'Sienna'               { return { term: 'color', value: 'a0522dff', location: location() }; }
+  / 'silver'               { return { term: 'color', value: 'c0c0c0ff', location: location() }; }
+  / 'Silver'               { return { term: 'color', value: 'c0c0c0ff', location: location() }; }
+  / 'skyblue'              { return { term: 'color', value: '87ceebff', location: location() }; }
+  / 'SkyBlue'              { return { term: 'color', value: '87ceebff', location: location() }; }
+  / 'slateblue'            { return { term: 'color', value: '6a5acdff', location: location() }; }
+  / 'SlateBlue'            { return { term: 'color', value: '6a5acdff', location: location() }; }
+  / 'slategray'            { return { term: 'color', value: '708090ff', location: location() }; }
+  / 'SlateGray'            { return { term: 'color', value: '708090ff', location: location() }; }
+  / 'slategrey'            { return { term: 'color', value: '708090ff', location: location() }; }
+  / 'SlateGrey'            { return { term: 'color', value: '708090ff', location: location() }; }
+  / 'snow'                 { return { term: 'color', value: 'fffafaff', location: location() }; }
+  / 'Snow'                 { return { term: 'color', value: 'fffafaff', location: location() }; }
+  / 'springgreen'          { return { term: 'color', value: '00ff7fff', location: location() }; }
+  / 'SpringGreen'          { return { term: 'color', value: '00ff7fff', location: location() }; }
+  / 'steelblue'            { return { term: 'color', value: '4682b4ff', location: location() }; }
+  / 'SteelBlue'            { return { term: 'color', value: '4682b4ff', location: location() }; }
+  / 'tan'                  { return { term: 'color', value: 'd2b48cff', location: location() }; }
+  / 'Tan'                  { return { term: 'color', value: 'd2b48cff', location: location() }; }
+  / 'teal'                 { return { term: 'color', value: '008080ff', location: location() }; }
+  / 'Teal'                 { return { term: 'color', value: '008080ff', location: location() }; }
+  / 'thistle'              { return { term: 'color', value: 'd8bfd8ff', location: location() }; }
+  / 'Thistle'              { return { term: 'color', value: 'd8bfd8ff', location: location() }; }
+  / 'tomato'               { return { term: 'color', value: 'ff6347ff', location: location() }; }
+  / 'Tomato'               { return { term: 'color', value: 'ff6347ff', location: location() }; }
+  / 'turquoise'            { return { term: 'color', value: '40e0d0ff', location: location() }; }
+  / 'Turquoise'            { return { term: 'color', value: '40e0d0ff', location: location() }; }
+  / 'violet'               { return { term: 'color', value: 'ee82eeff', location: location() }; }
+  / 'Violet'               { return { term: 'color', value: 'ee82eeff', location: location() }; }
+  / 'wheat'                { return { term: 'color', value: 'f5deb3ff', location: location() }; }
+  / 'Wheat'                { return { term: 'color', value: 'f5deb3ff', location: location() }; }
+  / 'white'                { return { term: 'color', value: 'ffffffff', location: location() }; }
+  / 'White'                { return { term: 'color', value: 'ffffffff', location: location() }; }
+  / 'whitesmoke'           { return { term: 'color', value: 'f5f5f5ff', location: location() }; }
+  / 'WhiteSmoke'           { return { term: 'color', value: 'f5f5f5ff', location: location() }; }
+  / 'yellow'               { return { term: 'color', value: 'ffff00ff', location: location() }; }
+  / 'Yellow'               { return { term: 'color', value: 'ffff00ff', location: location() }; }
+  / 'yellowgreen'          { return { term: 'color', value: '9acd32ff', location: location() }; }
+  / 'YellowGreen'          { return { term: 'color', value: '9acd32ff', location: location() }; }
 
 
 Rgb3
   = '#' r:_HexDigit g:_HexDigit b:_HexDigit _WS? {
-    return { term: 'Color', value: `${r}${r}${g}${g}${b}${b}ff`, location: location() }; }
+    return { term: 'color', value: `${r}${r}${g}${g}${b}${b}ff`, location: location() }; }
 
 Rgb6
   = '#' r1:_HexDigit r2:_HexDigit g1:_HexDigit g2:_HexDigit b1:_HexDigit b2:_HexDigit _WS? {
-    return { term: 'Color', value: `${r1}${r2}${g1}${g2}${b1}${b2}ff`, location: location() }; }
+    return { term: 'color', value: `${r1}${r2}${g1}${g2}${b1}${b2}ff`, location: location() }; }
 
 Rgba4
   = '#' r:_HexDigit g:_HexDigit b:_HexDigit a:_HexDigit _WS? {
-    return { term: 'Color', value: `${r}${r}${g}${g}${b}${b}${a}${a}`, location: location() }; }
+    return { term: 'color', value: `${r}${r}${g}${g}${b}${b}${a}${a}`, location: location() }; }
 
 Rgba8
   = '#' r1:_HexDigit r2:_HexDigit g1:_HexDigit g2:_HexDigit b1:_HexDigit b2:_HexDigit a1:_HexDigit a2:_HexDigit _WS? {
-    return { term: 'Color', value: `${r1}${r2}${g1}${g2}${b1}${b2}${a1}${a2}`, location: location() }; }
+    return { term: 'color', value: `${r1}${r2}${g1}${g2}${b1}${b2}${a1}${a2}`, location: location() }; }
 
 Color "color"   // hoboy
   = NamedColor
@@ -746,10 +772,14 @@ ArrowItemKey
   / "tail_label"
 
 ArrowItem
-  = term:ArrowItemKey _WS? ":" _WS? value:_Label _WS? ";" _WS? { return { term, value }; }
+  = term:ArrowItemKey _WS? ":" _WS? value:_Label _WS? ";" _WS? {
+    return { term, value, location: location() };
+  }
 
 SingleEdgeColor "single edge color"
-  = _WS? "edge_color" _WS? ":" _WS? value:Color _WS? ";" _WS? { return {key:'single_edge_color', value:value}; }
+  = "edge_color" _WS? ":" _WS? value:Color _WS? ";" _WS? {
+    return { term: 'single_edge_color', value, location: location() };
+  }
 
 ArrowItems
   = SingleEdgeColor
@@ -759,7 +789,9 @@ ArrowDesc
   = "{" _WS? items:ArrowItems? _WS? "}" { return items; }
 
 ArrowProbability
-  = value:NonNegNumber "%" { return { key: 'arrow probability', value: value }; }
+  = value:NonNegNumber "%" {
+    return { term: 'arrow_probability', value, location: location() };
+  }
 
 
 
@@ -787,7 +819,7 @@ _ShapeList
 
 
 Shape "shape"
- = value:_ShapeList { return { term: 'Shape', value, location: location() }; }
+ = value:_ShapeList { return { term: 'shape', value, location: location() }; }
 
 
 Stripe "stripe"
@@ -801,7 +833,7 @@ Cycle "cycle"
 
 MachineConfigTransition
   = "transition" _WS? ":" _WS? "{" _WS? value:ConfigTransitionItems* _WS? "};" _WS? {
-    return { key: "config", config_topic: "transition", value, location: location() };
+    return { term: "machine_config_transition", value, location: location() };
   }
 
 
@@ -810,17 +842,17 @@ MachineConfigTransition
 
 MachineConfigStartState
   = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { key: "config", config_topic: "start_state", value, location: location() };
+    return { term: "machine_config_start_state", value, location: location() };
   }
 
 MachineConfigEndState
   = "end_state"   _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { key: "config", config_topic: "end_state", value, location: location() };
+    return { term: "config", config_topic: "end_state", value, location: location() };
   }
 
 MachineConfigState
   = "state"       _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { key: "config", config_topic: "state", value, location: location() };
+    return { term: "config", config_topic: "state", value, location: location() };
   }
 
 
@@ -841,8 +873,8 @@ _TransitionKey_HeadType
 
 
 ConfigTransitionItem_Head
-  = transitionkey:_TransitionKey_HeadType _WS? ":" _WS? value:ArrowHead _WS? ";" _WS? {
-    return { key: transitionkey, value, location: location() };
+  = term:_TransitionKey_HeadType _WS? ":" _WS? value:ArrowHead _WS? ";" _WS? {
+    return { term, value, location: location() };
   }
 
 
@@ -855,8 +887,8 @@ _TransitionKey_Color
 
 
 ConfigTransitionItem_Color
-  = transitionkey:_TransitionKey_Color _WS? ":" _WS? value:Color _WS? ";" _WS? {
-    return { key: transitionkey, value, location: location() };
+  = term:_TransitionKey_Color _WS? ":" _WS? value:Color _WS? ";" _WS? {
+    return { term, value, location: location() };
   }
 
 
@@ -872,7 +904,10 @@ _StateItemThingKey_Shape
   = "node_shape"
 
 ConfigStateItemThings_Shape
-  = value:_StateItemThingKey_Shape  { return { term: 'Shape', value, location: location() }; }
+/* todo value is missing whargarbl */
+  = term:_StateItemThingKey_Shape _WS? {
+  	return { term, value, location: location() };
+  }
 
 
 
@@ -899,7 +934,8 @@ ConfigStateItemThings
 
 
 ConfigStateItems
-  = value:ConfigStateItemThings { return { term: 'Config_StateItem', value, location: location() }; }
+/* todo this value structure is wrong whargarbl */
+  = term:ConfigStateItemThings _WS? ":" _WS? value:_Label _WS? { return { term, value, location: location() }; }
 
 
 _ArrowHeadList
@@ -916,7 +952,7 @@ _ArrowHeadList
 
 
 ArrowHead "shape"
- = value:_ArrowHeadList { return { term: 'ArrowHead', value, location: location() }; }
+ = value:_ArrowHeadList { return { term: 'arrow_head', value, location: location() }; }
 
 ReverseArrowHead "shape"
- = value:_ArrowHeadList { return { term: 'ArrowHead', value, location: location() }; }
+ = value:_ArrowHeadList { return { term: 'arrow_tail', value, location: location() }; }

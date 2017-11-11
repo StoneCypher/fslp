@@ -16,4 +16,4 @@ _ShapeList
 
 
 Shape "shape"
- = value:_ShapeList { return { term: 'Shape', value, location: location() }; }
+ = value:_ShapeList { return { term: 'shape', value, location: location() }; }

@@ -1,5 +1,5 @@
 
 NamedList
-  = WS? "&" WS? list_name:Label WS? ":" WS? contents:LabelOrLabelList WS? ";" WS? {
-    return { key:'named_list', name:list_name, value:contents };
+  = "&" _WS? name:Label _WS? ":" _WS? value:LabelOrLabelList _WS? ";" _WS? {
+    return { term: 'named_list', name, value, location: location() };
   }

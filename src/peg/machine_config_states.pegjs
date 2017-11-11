@@ -3,7 +3,10 @@ _StateItemThingKey_Shape
   = "node_shape"
 
 ConfigStateItemThings_Shape
-  = value:_StateItemThingKey_Shape  { return { term: 'Shape', value, location: location() }; }
+/* todo value is missing whargarbl */
+  = term:_StateItemThingKey_Shape _WS? {
+  	return { term, value, location: location() };
+  }
 
 
 
@@ -30,4 +33,5 @@ ConfigStateItemThings
 
 
 ConfigStateItems
-  = value:ConfigStateItemThings { return { term: 'Config_StateItem', value, location: location() }; }
+/* todo this value structure is wrong whargarbl */
+  = term:ConfigStateItemThings _WS? ":" _WS? value:_Label _WS? { return { term, value, location: location() }; }

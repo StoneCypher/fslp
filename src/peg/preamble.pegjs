@@ -1,6 +1,9 @@
 
 Input
   = _WS? d:Document { return d; }
+/*
+  = _WS? d:Document { return { term: 'document', value: d, location: location() }; }
+*/
 
 Document
   = Arrow

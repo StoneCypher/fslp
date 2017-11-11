@@ -13,7 +13,7 @@ _ArrowHeadList
 
 
 ArrowHead "shape"
- = value:_ArrowHeadList { return { term: 'ArrowHead', value, location: location() }; }
+ = value:_ArrowHeadList { return { term: 'arrow_head', value, location: location() }; }
 
 ReverseArrowHead "shape"
- = value:_ArrowHeadList { return { term: 'ArrowHead', value, location: location() }; }
+ = value:_ArrowHeadList { return { term: 'arrow_tail', value, location: location() }; }

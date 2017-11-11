@@ -21,6 +21,6 @@ _LineComment "line comment"
   = "//" _LineCommentTail
 
 _WS "whitespace"
-  = _BlockComment _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
-  / _LineComment  _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
-  / [ \t\r\n\v]+  _WS? { return { term: 'Whitespace', value: undefined, location: location() }; }
+  = _BlockComment _WS? { return { term: 'whitespace', value: undefined, location: location() }; }
+  / _LineComment  _WS? { return { term: 'whitespace', value: undefined, location: location() }; }
+  / [ \t\r\n\v]+  _WS? { return { term: 'whitespace', value: undefined, location: location() }; }
