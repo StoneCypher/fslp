@@ -1,5 +1,5 @@
 
-MachineConfigTransition
+MachineConfigTransition "machine config for transitions"
   = "transition" _WS? ":" _WS? "{" _WS? value:ConfigTransitionItems* _WS? "};" _WS? {
     return { term: "machine_config_transition", value, location: location() };
   }
@@ -8,19 +8,19 @@ MachineConfigTransition
 
 
 
-MachineConfigStartState
-  = "start_state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { term: "machine_config_start_state", value, location: location() };
+MachineConfigStartState "machine config for start states"
+  = term:"start_state" _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
+    return { term, value, location: location() };
   }
 
-MachineConfigEndState
-  = "end_state"   _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { term: "config", config_topic: "end_state", value, location: location() };
+MachineConfigEndState "machine config for end states"
+  = term:"end_state"   _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
+    return { term, value, location: location() };
   }
 
-MachineConfigState
-  = "state"       _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
-    return { term: "config", config_topic: "state", value, location: location() };
+MachineConfigState "machine config for states"
+  = term:"state"       _WS? ":" _WS? "{" _WS? value:ConfigStateItems* _WS? "};" _WS? {
+    return { term, value, location: location() };
   }
 
 

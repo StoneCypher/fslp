@@ -7,6 +7,9 @@ Input
 
 Document
   = Arrow
+  / ConfigStateItems
+  / ConfigStateItemList
+  / StateDeclaration
   / SemVer
   / NonNegNumber
   / LicenseNotation

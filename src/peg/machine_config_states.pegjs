@@ -4,7 +4,7 @@ _StateItemThingKey_Shape
 
 ConfigStateItemThings_Shape
 /* todo value is missing whargarbl */
-  = term:_StateItemThingKey_Shape _WS? {
+  = term:_StateItemThingKey_Shape _WS? ";" _WS? {
   	return { term, value, location: location() };
   }
 
@@ -33,5 +33,15 @@ ConfigStateItemThings
 
 
 ConfigStateItems
-/* todo this value structure is wrong whargarbl */
-  = term:ConfigStateItemThings _WS? ":" _WS? value:_Label _WS? { return { term, value, location: location() }; }
+  = term:ConfigStateItemThings _WS? ":" _WS? value:_Label _WS? {
+    return { term, value, location: location() };
+  }
+
+
+
+
+
+ConfigStateItemList
+  = "{" _WS? value:ConfigStateItemEntry* _WS? "}" _WS? {
+    return { term: "config_state_item_list", value, location: location() };
+  }
