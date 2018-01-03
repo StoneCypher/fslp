@@ -929,7 +929,7 @@ _StateItemThingKey_Shape
 
 ConfigStateItemThings_Shape
 /* todo value is missing whargarbl */
-  = term:_StateItemThingKey_Shape _WS? {
+  = term:_StateItemThingKey_Shape _WS? ";" _WS? {
   	return { term, value, location: location() };
   }
 
@@ -967,7 +967,7 @@ ConfigStateItems
 
 
 ConfigStateItemList
-  = "{" _WS? value:ConfigStateItems* _WS? "}" _WS? {
+  = "{" _WS? value:ConfigStateItemEntry* _WS? "}" _WS? {
     return { term: "config_state_item_list", value, location: location() };
   }
 
