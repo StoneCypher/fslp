@@ -5,6 +5,6 @@
 
 
 
-const parse() => ({});
+const parse = (): string => 'todo whargarbl';
 
 export { parse };

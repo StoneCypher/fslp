@@ -7,11 +7,11 @@ const pkg = require('./package');
 
 export default {
 
-  input     : 'src/ts/index.ts',
+  input     : 'src/ts/fslp.ts',
 //moduleId  : pkg.name,
 
   output    : {
-    file      : 'build/index.js',
+    file      : 'build/fslp.js',
     format    : 'cjs',
     name      : 'fslp',
     sourcemap : true,
