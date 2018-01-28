@@ -1,10 +1,8 @@
 
-// import {  } from '';
+import { parse } from '../../build/gen/parser';
 
 
 
 
-
-const parse = (): string => 'todo whargarbl';
 
 export { parse };

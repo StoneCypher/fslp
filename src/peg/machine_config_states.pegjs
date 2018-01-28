@@ -42,6 +42,6 @@ ConfigStateItems
 
 
 ConfigStateItemList
-  = "{" _WS? value:ConfigStateItemEntry* _WS? "}" _WS? {
+  = "{" _WS? value:ConfigStateItems* _WS? "}" _WS? {
     return { term: "config_state_item_list", value, location: location() };
   }

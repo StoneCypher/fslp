@@ -4,11 +4,11 @@
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf -f build/ && mkdir build",
+    "clean": "rimraf -f build/ && mkdir build && cd build && mkdir gen && cd ..",
     "test": "npm run eslint && npm run nyc",
     "nyc": "nyc ava src/tests/*.js",
     "nyc_verbose": "ava src/tests/*.js -v",
-    "mk_parser": "echo todo",
+    "mk_parser": "node src/build/gen_peg.js",
     "typescript": "rollup -c",
     "just_typescript": "tsc",
     "eslint": "echo todo",
@@ -81,6 +81,7 @@
     "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-typescript2": "^0.10.0",
+    "ts-pegjs": "^0.1.13",
     "typescript": "^2.6.2"
   },
   "dependencies": {}
