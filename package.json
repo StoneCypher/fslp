@@ -4,13 +4,15 @@
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf -f dist/",
+    "clean": "rimraf -f build/ && mkdir build",
     "test": "nyc ava src/tests/*.js",
     "test_verbose": "ava src/tests/*.js -v",
-    "build": "npm run clean && npm run make_peg && npm run test",
+    "mk_parser": "echo todo",
+    "typescript": "echo todo",
+    "build": "npm run clean && npm run make_peg && npm run mk_parser && npm run typescript && npm run test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "travis": "npm run coverage",
-    "make_peg": "concat -o dist/fsl-peg.pegjs src/peg/function_preamble.pegjs src/peg/preamble.pegjs src/peg/attributes.pegjs src/peg/expression_and_subexpression.pegjs src/peg/doc_structure.pegjs src/peg/url.pegjs src/peg/graphviz_controls.pegjs src/peg/label.pegjs src/peg/licenses.pegjs src/peg/numbers.pegjs src/peg/semver.pegjs src/peg/named_color.pegjs src/peg/color.pegjs src/peg/arrow.pegjs src/peg/arrow_rest.pegjs src/peg/shape.pegjs src/peg/stripe_and_cycle.pegjs src/peg/machine_config.pegjs src/peg/machine_config_transitions.pegjs src/peg/machine_config_states.pegjs src/peg/arrow_head_types.pegjs src/peg/state_declaration.pegjs"
+    "make_peg": "concat -o build/fsl-peg.pegjs src/peg/function_preamble.pegjs src/peg/preamble.pegjs src/peg/attributes.pegjs src/peg/expression_and_subexpression.pegjs src/peg/doc_structure.pegjs src/peg/url.pegjs src/peg/graphviz_controls.pegjs src/peg/label.pegjs src/peg/licenses.pegjs src/peg/numbers.pegjs src/peg/semver.pegjs src/peg/named_color.pegjs src/peg/color.pegjs src/peg/arrow.pegjs src/peg/arrow_rest.pegjs src/peg/shape.pegjs src/peg/stripe_and_cycle.pegjs src/peg/machine_config.pegjs src/peg/machine_config_transitions.pegjs src/peg/machine_config_states.pegjs src/peg/arrow_head_types.pegjs src/peg/state_declaration.pegjs"
   },
   "repository": {
     "type": "git",
@@ -42,6 +44,7 @@
   },
   "homepage": "https://github.com/StoneCypher/fslp#readme",
   "devDependencies": {
+    "@types/pegjs": "^0.10.0",
     "ava": "^0.24.0",
     "ava-spec": "^1.1.1",
     "babel-cli": "^6.26.0",
@@ -62,8 +65,14 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-unicorn": "^3.0.1",
+    "grammkit": "^0.6.0",
     "nyc": "^11.4.1",
-    "rimraf": "^2.6.2"
+    "pegjs": "^0.10.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.54.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/node": "^9.3.0",
+    "typescript": "^2.6.2"
+  }
 }
