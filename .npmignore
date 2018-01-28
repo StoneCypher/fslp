@@ -42,3 +42,5 @@ jspm_packages
 src/js/jssm-dot.js
 
 build/
+
+.rpt2_cache/
