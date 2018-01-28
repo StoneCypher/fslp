@@ -1,6 +1,6 @@
 {
   "name": "fslp",
-  "version": "0.15.1",
+  "version": "0.15.2",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "nyc": "nyc ava src/tests/*.js",
     "nyc_verbose": "ava src/tests/*.js -v",
     "mk_parser": "echo todo",
-    "typescript": "echo todo",
+    "typescript": "rollup -c",
+    "just_typescript": "tsc",
     "eslint": "echo todo",
     "tsdoc": "echo todo",
     "grammkit": "echo todo",
@@ -51,6 +52,7 @@
   },
   "homepage": "https://github.com/StoneCypher/fslp#readme",
   "devDependencies": {
+    "@types/node": "^9.3.0",
     "@types/pegjs": "^0.10.0",
     "ava": "^0.24.0",
     "ava-spec": "^1.1.1",
@@ -77,9 +79,10 @@
     "pegjs": "^0.10.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.54.1",
-    "@types/node": "^9.3.0",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-typescript2": "^0.10.0",
     "typescript": "^2.6.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
