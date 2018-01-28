@@ -3,8 +3,6 @@
 
 import {describe} from 'ava-spec';
 
-// const jssm = require('../../../build/jssm.es5.js');
-
 
 
 
