@@ -1,5 +1,4 @@
 
-import typescript  from 'rollup-plugin-typescript2';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs    from 'rollup-plugin-commonjs';
 
@@ -7,7 +6,7 @@ const pkg = require('./package');
 
 export default {
 
-  input     : 'src/ts/fslp.ts',
+  input     : 'src/ts/fslp.js',
 //moduleId  : pkg.name,
 
   output    : {
@@ -34,10 +33,6 @@ export default {
       extensions: [ '.js', '.json', '.ts' ],
       preferBuiltins: false
     }),
-
-    typescript({
-      typescript: require('typescript') // use local version
-    })
 
   ]
 }
