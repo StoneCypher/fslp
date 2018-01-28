@@ -1,4 +1,5 @@
 
+import typescript  from 'rollup-plugin-typescript2';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs    from 'rollup-plugin-commonjs';
 
@@ -29,10 +30,14 @@ export default {
       module: true,
       jsnext: true,
       browser: true,
-//    extensions: [ '.js', '.json', '.jsx', '.ts', '.tsx' ],
-      extensions: [ '.js', '.json', '.ts' ],
+      extensions: [ '.js', '.json', '.jsx', '.ts', '.tsx' ],
+//    extensions: [ '.js', '.json', '.ts' ],
       preferBuiltins: false
     }),
+
+    typescript({
+      typescript: require('typescript') // use local version
+    })
 
   ]
 }

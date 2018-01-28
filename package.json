@@ -11,12 +11,13 @@
     "mk_parser": "node src/build/gen_peg.js",
     "typescript": "rollup -c",
     "just_typescript": "tsc",
+    "minify": "uglifyjs ./build/fslp.js -o ./build/fslp.min.js --compress",
     "eslint": "echo todo",
     "tsdoc": "echo todo",
     "grammkit": "echo todo",
     "doc": "npm run grammkit && npm run tsdoc",
     "site": "echo todo",
-    "make": "npm run make_peg && npm run mk_parser && npm run typescript",
+    "make": "npm run make_peg && npm run mk_parser && npm run typescript && npm run minify",
     "build": "npm run clean && npm run make && npm run test && npm run doc && npm run site",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "travis": "npm run coverage",
@@ -80,7 +81,10 @@
     "rollup": "^0.54.1",
     "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
-    "rollup-plugin-typescript2": "^0.10.0"
+    "rollup-plugin-typescript2": "^0.10.0",
+    "ts-pegjs": "^0.1.13",
+    "typescript": "^2.6.2",
+    "uglify-es": "^3.3.9"
   },
   "dependencies": {}
 }
