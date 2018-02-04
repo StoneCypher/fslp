@@ -9,6 +9,52 @@ const fslp = require('../../build/fslp.js');
 
 
 
+function t_expand(term_obj, terms, work = {}) {
+
+  if (terms.length) {
+
+    const [thisTerm, ... remTerms] = terms;
+
+    if (!(Array.isArray(term_obj[thisTerm]))) {
+      throw new TypeError(`Every value must be an array.  Index ${thisTerm} is not.`);
+    }
+
+    return [].concat.apply([], term_obj[thisTerm].map(tt => {
+      const newCfg = Object.assign({}, work);
+      newCfg[thisTerm] = tt;
+      return t_expand(term_obj, remTerms, newCfg);
+    }));
+
+  } else {
+    return work;
+  }
+
+}
+
+/*
+expand({bob: ['bob', 'robert'], bill: ['bill', 'william'] });
+ {bob: "bob", bill: "bill"}
+ {bob: "bob", bill: "william"}
+ {bob: "robert", bill: "bill"}
+ {bob: "robert", bill: "william"}
+*/
+
+function expand(term_obj) {
+  return t_expand(term_obj, Object.keys(term_obj));
+}
+
+
+
+
+
+describe('expand requires arrays', async it => {
+  it('throwing otherwise', t => t.throws(() => expand({a:2})));
+});
+
+
+
+
+
 describe('basic expressions', async it => {
 
   const arrows = [
@@ -25,10 +71,10 @@ describe('basic expressions', async it => {
 
   const pads = ['', ' ', '\t', '\r', '\n', '\r\n', ' \r\n\t\n\n \n '];
 
-  const tpad = [].concat(... pads.map(l => pads.map(r => ({l, r}))));
+  const tpad = expand({ l: pads, r: pads, sem: pads });
 
   const make_test = pad => {
-    const src = `a${pad.l}->${pad.r}b;`;
+    const src = `a${pad.l}->${pad.r}b${pad.sem};`;
     it(src, t => t.is('transition', fslp.parse(src).value[0].term ));
   }
 
