@@ -1,34 +1,12 @@
 
-Input
-  = _WS? d:Document { return d; }
-/*
-  = _WS? value:Document {
-  	return {
-  		term     : 'document',
-  		value,
-  		location : location()
-  	};
-  }
-*/
+// whargarbl todo make term 'library' if machine_name not present
 
 Document
-  = TermList
-/*
-  / Arrow
-  / ConfigStateItems
-  / ConfigStateItemList
+  = _WS? value:_Term* { return { term: 'fsl_parse_tree', value, location: location() }; }
+
+_Term
+  = Expr
   / StateDeclaration
-  / SemVer
-  / NonNegNumber
-  / LicenseNotation
-  / GraphLayout
-  / GvizLayoutType
-  / URL
+  / NamedList
   / MachineAttribute
-  / Stripe
-  / Cycle
   / MachineConfig
-  / Shape
-  / NamedColor
-  / Color
-*/
