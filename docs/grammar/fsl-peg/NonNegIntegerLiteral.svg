@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="railroad-diagram" width="449" height="111" viewBox="0 0 449 111">
+<defs><style type="text/css"><![CDATA[ svg.railroad-diagram {
+  background-color: hsl(30,20%,95%);
+}
+svg.railroad-diagram path {
+  stroke-width: 3;
+  stroke: black;
+  fill: none;
+}
+svg.railroad-diagram text {
+  font: bold 14px monospace;
+  text-anchor: middle;
+  cursor: pointer;
+}
+svg.railroad-diagram text.label {
+  text-anchor: start;
+}
+svg.railroad-diagram text.comment {
+  font: italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width: 3;
+  stroke: black;
+  fill: hsl(120,100%,90%);
+}
+ ]]></style></defs>
+<g transform="translate(.5 .5)">
+<path d="M 20 21 v 20 m 10 -20 v 20 m -10 -10 h 20.5"></path>
+<g>
+<path d="M40 31h0"></path>
+<path d="M408 31h0"></path>
+<path d="M40 31h20"></path>
+<g>
+<path d="M60 31h150"></path>
+<path d="M238 31h150"></path>
+<rect x="210" y="20" width="28" height="22" rx="10" ry="10"></rect>
+<text x="224" y="35">0</text>
+</g>
+<path d="M388 31h20"></path>
+<path d="M40 31a10 10 0 0 1 10 10v20a10 10 0 0 0 10 10"></path>
+<g>
+<path d="M60 71h0"></path>
+<path d="M388 71h0"></path>
+<path d="M60 71h10"></path>
+<g>
+<path d="M70 71h0"></path>
+<path d="M194 71h0"></path>
+<rect x="70" y="60" width="124" height="22"></rect>
+<text x="132" y="75">&#95;NonZeroDigit</text>
+</g>
+<path d="M194 71h10"></path>
+<g>
+<path d="M204 71h0"></path>
+<path d="M388 71h0"></path>
+<path d="M204 71a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M224 51h144"></path>
+</g>
+<path d="M368 51a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M204 71h20"></path>
+<g>
+<path d="M224 71h0"></path>
+<path d="M368 71h0"></path>
+<path d="M224 71h10"></path>
+<g>
+<path d="M234 71h0"></path>
+<path d="M358 71h0"></path>
+<rect x="234" y="60" width="124" height="22"></rect>
+<text x="296" y="75">&#95;DecimalDigit</text>
+</g>
+<path d="M358 71h10"></path>
+<path d="M234 71a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path>
+<g>
+<path d="M234 91h124"></path>
+</g>
+<path d="M358 91a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path>
+</g>
+<path d="M368 71h20"></path>
+</g>
+</g>
+<path d="M388 71a10 10 0 0 0 10 -10v-20a10 10 0 0 1 10 -10"></path>
+</g>
+<path d="M 408 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path>
+</g>
+</svg>

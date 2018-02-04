@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="railroad-diagram" width="677" height="72" viewBox="0 0 677 72">
+<defs><style type="text/css"><![CDATA[ svg.railroad-diagram {
+  background-color: hsl(30,20%,95%);
+}
+svg.railroad-diagram path {
+  stroke-width: 3;
+  stroke: black;
+  fill: none;
+}
+svg.railroad-diagram text {
+  font: bold 14px monospace;
+  text-anchor: middle;
+  cursor: pointer;
+}
+svg.railroad-diagram text.label {
+  text-anchor: start;
+}
+svg.railroad-diagram text.comment {
+  font: italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width: 3;
+  stroke: black;
+  fill: hsl(120,100%,90%);
+}
+ ]]></style></defs>
+<g transform="translate(.5 .5)">
+<path d="M 20 31 v 20 m 10 -20 v 20 m -10 -10 h 20.5"></path>
+<g>
+<path d="M40 41h0"></path>
+<path d="M636 41h0"></path>
+<path d="M40 41h10"></path>
+<g>
+<path d="M50 41h0"></path>
+<path d="M238 41h0"></path>
+<rect x="50" y="30" width="188" height="22"></rect>
+<text x="144" y="45">ConfigStateItemThings</text>
+</g>
+<path d="M238 41h10"></path>
+<g>
+<path d="M248 41h0"></path>
+<path d="M332 41h0"></path>
+<path d="M248 41a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M268 21h44"></path>
+</g>
+<path d="M312 21a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M248 41h20"></path>
+<g>
+<path d="M268 41h0"></path>
+<path d="M312 41h0"></path>
+<rect x="268" y="30" width="44" height="22"></rect>
+<text x="290" y="45">&#95;WS</text>
+</g>
+<path d="M312 41h20"></path>
+</g>
+<path d="M332 41h10"></path>
+<g>
+<path d="M342 41h0"></path>
+<path d="M370 41h0"></path>
+<rect x="342" y="30" width="28" height="22" rx="10" ry="10"></rect>
+<text x="356" y="45">:</text>
+</g>
+<path d="M370 41h10"></path>
+<g>
+<path d="M380 41h0"></path>
+<path d="M464 41h0"></path>
+<path d="M380 41a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M400 21h44"></path>
+</g>
+<path d="M444 21a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M380 41h20"></path>
+<g>
+<path d="M400 41h0"></path>
+<path d="M444 41h0"></path>
+<rect x="400" y="30" width="44" height="22"></rect>
+<text x="422" y="45">&#95;WS</text>
+</g>
+<path d="M444 41h20"></path>
+</g>
+<path d="M464 41h10"></path>
+<g>
+<path d="M474 41h0"></path>
+<path d="M542 41h0"></path>
+<rect x="474" y="30" width="68" height="22"></rect>
+<text x="508" y="45">&#95;Label</text>
+</g>
+<path d="M542 41h10"></path>
+<g>
+<path d="M552 41h0"></path>
+<path d="M636 41h0"></path>
+<path d="M552 41a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M572 21h44"></path>
+</g>
+<path d="M616 21a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M552 41h20"></path>
+<g>
+<path d="M572 41h0"></path>
+<path d="M616 41h0"></path>
+<rect x="572" y="30" width="44" height="22"></rect>
+<text x="594" y="45">&#95;WS</text>
+</g>
+<path d="M616 41h20"></path>
+</g>
+</g>
+<path d="M 636 41 h 20 m -10 -10 v 20 m 10 -20 v 20"></path>
+</g>
+</svg>

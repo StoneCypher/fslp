@@ -1,0 +1,95 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="railroad-diagram" width="661" height="72" viewBox="0 0 661 72">
+<defs><style type="text/css"><![CDATA[ svg.railroad-diagram {
+  background-color: hsl(30,20%,95%);
+}
+svg.railroad-diagram path {
+  stroke-width: 3;
+  stroke: black;
+  fill: none;
+}
+svg.railroad-diagram text {
+  font: bold 14px monospace;
+  text-anchor: middle;
+  cursor: pointer;
+}
+svg.railroad-diagram text.label {
+  text-anchor: start;
+}
+svg.railroad-diagram text.comment {
+  font: italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width: 3;
+  stroke: black;
+  fill: hsl(120,100%,90%);
+}
+ ]]></style></defs>
+<g transform="translate(.5 .5)">
+<path d="M 20 31 v 20 m 10 -20 v 20 m -10 -10 h 20.5"></path>
+<g>
+<path d="M40 41h0"></path>
+<path d="M620 41h0"></path>
+<path d="M40 41h10"></path>
+<g>
+<path d="M50 41h0"></path>
+<path d="M78 41h0"></path>
+<rect x="50" y="30" width="28" height="22" rx="10" ry="10"></rect>
+<text x="64" y="45">#</text>
+</g>
+<path d="M78 41h10"></path>
+<path d="M88 41h10"></path>
+<g>
+<path d="M98 41h0"></path>
+<path d="M190 41h0"></path>
+<rect x="98" y="30" width="92" height="22"></rect>
+<text x="144" y="45">&#95;HexDigit</text>
+</g>
+<path d="M190 41h10"></path>
+<path d="M200 41h10"></path>
+<g>
+<path d="M210 41h0"></path>
+<path d="M302 41h0"></path>
+<rect x="210" y="30" width="92" height="22"></rect>
+<text x="256" y="45">&#95;HexDigit</text>
+</g>
+<path d="M302 41h10"></path>
+<path d="M312 41h10"></path>
+<g>
+<path d="M322 41h0"></path>
+<path d="M414 41h0"></path>
+<rect x="322" y="30" width="92" height="22"></rect>
+<text x="368" y="45">&#95;HexDigit</text>
+</g>
+<path d="M414 41h10"></path>
+<path d="M424 41h10"></path>
+<g>
+<path d="M434 41h0"></path>
+<path d="M526 41h0"></path>
+<rect x="434" y="30" width="92" height="22"></rect>
+<text x="480" y="45">&#95;HexDigit</text>
+</g>
+<path d="M526 41h10"></path>
+<g>
+<path d="M536 41h0"></path>
+<path d="M620 41h0"></path>
+<path d="M536 41a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M556 21h44"></path>
+</g>
+<path d="M600 21a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M536 41h20"></path>
+<g>
+<path d="M556 41h0"></path>
+<path d="M600 41h0"></path>
+<rect x="556" y="30" width="44" height="22"></rect>
+<text x="578" y="45">&#95;WS</text>
+</g>
+<path d="M600 41h20"></path>
+</g>
+</g>
+<path d="M 620 41 h 20 m -10 -10 v 20 m 10 -20 v 20"></path>
+</g>
+</svg>

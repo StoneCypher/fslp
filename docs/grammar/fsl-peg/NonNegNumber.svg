@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="railroad-diagram" width="637" height="121" viewBox="0 0 637 121">
+<defs><style type="text/css"><![CDATA[ svg.railroad-diagram {
+  background-color: hsl(30,20%,95%);
+}
+svg.railroad-diagram path {
+  stroke-width: 3;
+  stroke: black;
+  fill: none;
+}
+svg.railroad-diagram text {
+  font: bold 14px monospace;
+  text-anchor: middle;
+  cursor: pointer;
+}
+svg.railroad-diagram text.label {
+  text-anchor: start;
+}
+svg.railroad-diagram text.comment {
+  font: italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width: 3;
+  stroke: black;
+  fill: hsl(120,100%,90%);
+}
+ ]]></style></defs>
+<g transform="translate(.5 .5)">
+<path d="M 20 31 v 20 m 10 -20 v 20 m -10 -10 h 20.5"></path>
+<g>
+<path d="M40 41h0"></path>
+<path d="M596 41h0"></path>
+<path d="M40 41h20"></path>
+<g>
+<path d="M60 41h0"></path>
+<path d="M576 41h0"></path>
+<path d="M60 41h10"></path>
+<g>
+<path d="M70 41h0"></path>
+<path d="M250 41h0"></path>
+<rect x="70" y="30" width="180" height="22"></rect>
+<text x="160" y="45">NonNegIntegerLiteral</text>
+</g>
+<path d="M250 41h10"></path>
+<path d="M260 41h10"></path>
+<g>
+<path d="M270 41h0"></path>
+<path d="M298 41h0"></path>
+<rect x="270" y="30" width="28" height="22" rx="10" ry="10"></rect>
+<text x="284" y="45">.</text>
+</g>
+<path d="M298 41h10"></path>
+<g>
+<path d="M308 41h0"></path>
+<path d="M492 41h0"></path>
+<path d="M308 41a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M328 21h144"></path>
+</g>
+<path d="M472 21a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M308 41h20"></path>
+<g>
+<path d="M328 41h0"></path>
+<path d="M472 41h0"></path>
+<path d="M328 41h10"></path>
+<g>
+<path d="M338 41h0"></path>
+<path d="M462 41h0"></path>
+<rect x="338" y="30" width="124" height="22"></rect>
+<text x="400" y="45">&#95;DecimalDigit</text>
+</g>
+<path d="M462 41h10"></path>
+<path d="M338 41a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path>
+<g>
+<path d="M338 61h124"></path>
+</g>
+<path d="M462 61a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path>
+</g>
+<path d="M472 41h20"></path>
+</g>
+<g>
+<path d="M492 41h0"></path>
+<path d="M576 41h0"></path>
+<path d="M492 41a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M512 21h44"></path>
+</g>
+<path d="M556 21a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M492 41h20"></path>
+<g>
+<path d="M512 41h0"></path>
+<path d="M556 41h0"></path>
+<rect x="512" y="30" width="44" height="22"></rect>
+<text x="534" y="45">&#95;WS</text>
+</g>
+<path d="M556 41h20"></path>
+</g>
+</g>
+<path d="M576 41h20"></path>
+<path d="M40 41a10 10 0 0 1 10 10v29a10 10 0 0 0 10 10"></path>
+<g>
+<path d="M60 90h116"></path>
+<path d="M460 90h116"></path>
+<path d="M176 90h10"></path>
+<g>
+<path d="M186 90h0"></path>
+<path d="M366 90h0"></path>
+<rect x="186" y="79" width="180" height="22"></rect>
+<text x="276" y="94">NonNegIntegerLiteral</text>
+</g>
+<path d="M366 90h10"></path>
+<g>
+<path d="M376 90h0"></path>
+<path d="M460 90h0"></path>
+<path d="M376 90a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+<g>
+<path d="M396 70h44"></path>
+</g>
+<path d="M440 70a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+<path d="M376 90h20"></path>
+<g>
+<path d="M396 90h0"></path>
+<path d="M440 90h0"></path>
+<rect x="396" y="79" width="44" height="22"></rect>
+<text x="418" y="94">&#95;WS</text>
+</g>
+<path d="M440 90h20"></path>
+</g>
+</g>
+<path d="M576 90a10 10 0 0 0 10 -10v-29a10 10 0 0 1 10 -10"></path>
+</g>
+<path d="M 596 41 h 20 m -10 -10 v 20 m 10 -20 v 20"></path>
+</g>
+</svg>
