@@ -68,7 +68,7 @@ _AtomFirstLetter
   = [0-9a-zA-Z\.\_\!\$\^\*\!\?\,\x80-\uFFFF]
 
 _AtomLetter
-  = [0-9a-zA-Z\.\+\=\_\^\(\)\*\&\$\#\@\!\?\,\x80-\uFFFF]
+  = [0-9a-zA-Z\.\+\_\^\(\)\*\&\$\#\@\!\?\,\x80-\uFFFF]
 
 _Atom "atom"
   = firstletter:_AtomFirstLetter text:_AtomLetter* {

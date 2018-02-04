@@ -55,6 +55,31 @@ describe('expand requires arrays', async it => {
 
 
 
+describe('arrow kinds', async it => {
+
+  const arrows = [
+    { write: '->',  rkind: 'normal' },
+    { write: '~>',  rkind: 'forced' },
+    { write: '=>',  rkind: 'main'   },
+    { write: '<-',  lkind: 'normal' },
+    { write: '<~',  lkind: 'forced' },
+    { write: '<=',  lkind: 'main'   },
+    { write: '<->', rkind: 'normal', lkind: 'normal' },
+    { write: '<~>', rkind: 'forced', lkind: 'forced' },
+    { write: '<=>', rkind: 'main',   lkind: 'main'   }
+  ];
+
+  arrows.map(arrow => {
+    const src = `a${arrow.write}b;`;
+    it(src, t => t.is('transition', fslp.parse(src).value[0].term ));
+  });
+
+});
+
+
+
+
+
 describe('basic expressions', async it => {
 
   const arrows = [
@@ -79,7 +104,5 @@ describe('basic expressions', async it => {
   }
 
   tpad.map(pad => make_test(pad));
-
-  it('a -> b;', t => t.is('transition', fslp.parse('a->b;').value[0].term ));
 
 });

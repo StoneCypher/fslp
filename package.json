@@ -1,6 +1,6 @@
 {
   "name": "fslp",
-  "version": "0.15.7",
+  "version": "0.15.8",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
