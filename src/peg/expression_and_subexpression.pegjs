@@ -14,7 +14,7 @@ Subexpr
     _WS? tail     :  Subexpr? {
 
       // this changed kind to key.  some breakage may result?
-      const base = { key: arrow, to: label };
+      const base = { term: 'transition-se', key: arrow, to: label };
 
       if (tail && (tail !== [])) { base.se            = tail;         }
       if (l_desc)                { base.l_desc        = l_desc;       }
@@ -32,5 +32,5 @@ Subexpr
 
 Expr
   = label:ArrowTarget se:Subexpr _WS? ';' _WS? {
-    return { key: 'transition', from: label, se: (se && (se !== []))? se : undefined };
+    return { term: 'transition', from: label, se: (se && (se !== []))? se : undefined };
   }

@@ -2,11 +2,19 @@
 Input
   = _WS? d:Document { return d; }
 /*
-  = _WS? d:Document { return { term: 'document', value: d, location: location() }; }
+  = _WS? value:Document {
+  	return {
+  		term     : 'document',
+  		value,
+  		location : location()
+  	};
+  }
 */
 
 Document
-  = Arrow
+  = TermList
+/*
+  / Arrow
   / ConfigStateItems
   / ConfigStateItemList
   / StateDeclaration
@@ -23,3 +31,4 @@ Document
   / Shape
   / NamedColor
   / Color
+*/
