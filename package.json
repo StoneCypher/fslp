@@ -1,6 +1,6 @@
 {
   "name": "fslp",
-  "version": "0.15.11",
+  "version": "0.15.12",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
@@ -13,9 +13,8 @@
     "minify": "uglifyjs ./build/fslp.js -o ./build/fslp.min.js --compress",
     "eslint": "eslint src/js/*.js",
     "grammkit": "cd docs && cd grammar && grammkit -t md ../../build/fsl-peg.pegjs && cd .. && cd ..",
-    "documentationjs": "echo todo",
-    "doc": "npm run grammkit && npm run documentationjs",
-    "site": "echo todo",
+    "doc": "npm run grammkit",
+    "site": "cp -r ./src/site/* ./docs",
     "make": "npm run make_peg && npm run mk_parser && npm run rollup && npm run minify",
     "build": "npm run clean && npm run make && npm run test && npm run doc && npm run site",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -82,6 +81,5 @@
     "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
     "uglify-es": "^3.3.9"
-  },
-  "dependencies": {}
+  }
 }

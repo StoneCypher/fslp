@@ -65,10 +65,10 @@ _String "string"
 
 
 _AtomFirstLetter
-  = [0-9a-zA-Z\.\_\!\$\^\*\!\?\,\x80-\uFFFF]
+  = [0-9a-zA-Z\.\_\!\$\^\*\!\?\,\x80-\u2189\u2195-\u2199\u219c-\u21ad\u21af-\u21c9\u21d5-\uFFFF]
 
 _AtomLetter
-  = [0-9a-zA-Z\.\+\_\^\(\)\*\&\$\#\@\!\?\,\x80-\uFFFF]
+  = [0-9a-zA-Z\.\+\_\^\(\)\*\&\$\#\@\!\?\,\x80-\u2189\u2195-\u2199\u219c-\u21ad\u21af-\u21c9\u21d5-\uFFFF]
 
 _Atom "atom"
   = firstletter:_AtomFirstLetter text:_AtomLetter* {

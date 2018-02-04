@@ -58,15 +58,40 @@ describe('expand requires arrays', async it => {
 describe('arrow kinds', async it => {
 
   const arrows = [
-    { write: '->',  rkind: 'normal' },
-    { write: '~>',  rkind: 'forced' },
-    { write: '=>',  rkind: 'main'   },
-    { write: '<-',  lkind: 'normal' },
-    { write: '<~',  lkind: 'forced' },
-    { write: '<=',  lkind: 'main'   },
-    { write: '<->', rkind: 'normal', lkind: 'normal' },
-    { write: '<~>', rkind: 'forced', lkind: 'forced' },
-    { write: '<=>', rkind: 'main',   lkind: 'main'   }
+    { write: '->',   rkind: 'normal' },
+    { write: '~>',   rkind: 'forced' },
+    { write: '=>',   rkind: 'main'   },
+    { write: '<-',   lkind: 'normal' },
+    { write: '<~',   lkind: 'forced' },
+    { write: '<=',   lkind: 'main'   },
+    { write: '<->',  rkind: 'normal', lkind: 'normal' },
+    { write: '<~>',  rkind: 'forced', lkind: 'forced' },
+    { write: '<=>',  rkind: 'main',   lkind: 'main'   },
+
+    { write: '<-=>', rkind: 'normal', lkind: 'main'   },
+    { write: '<~=>', rkind: 'forced', lkind: 'main'   },
+    { write: '<=->', rkind: 'main',   lkind: 'normal' },
+    { write: '<-~>', rkind: 'normal', lkind: 'forced' },
+    { write: '<~->', rkind: 'forced', lkind: 'normal' },
+    { write: '<=~>', rkind: 'main',   lkind: 'forced' },
+
+    { write: '→',   rkind: 'normal' },
+    { write: '↛',   rkind: 'forced' },
+    { write: '⇒',   rkind: 'main'   },
+    { write: '←',   lkind: 'normal' },
+    { write: '↚',   lkind: 'forced' },
+    { write: '⇐',   lkind: 'main'   },
+    { write: '↔',   rkind: 'normal', lkind: 'normal' },
+    { write: '↮',   rkind: 'forced', lkind: 'forced' },
+    { write: '⇔',   rkind: 'main',   lkind: 'main'   },
+
+    { write: '←⇒', rkind: 'normal', lkind: 'main'   },
+    { write: '↚⇒', rkind: 'forced', lkind: 'main'   },
+    { write: '⇐→', rkind: 'main',   lkind: 'normal' },
+    { write: '←↛', rkind: 'normal', lkind: 'forced' },
+    { write: '↚→', rkind: 'forced', lkind: 'normal' },
+    { write: '⇐↛', rkind: 'main',   lkind: 'forced' }
+
   ];
 
   arrows.map(arrow => {
@@ -80,19 +105,7 @@ describe('arrow kinds', async it => {
 
 
 
-describe('basic expressions', async it => {
-
-  const arrows = [
-    { write: '->',  rkind: 'normal' },
-    { write: '~>',  rkind: 'forced' },
-    { write: '=>',  rkind: 'main'   },
-    { write: '<-',  lkind: 'normal' },
-    { write: '<~',  lkind: 'forced' },
-    { write: '<=',  lkind: 'main'   },
-    { write: '<->', rkind: 'normal', lkind: 'normal' },
-    { write: '<~>', rkind: 'forced', lkind: 'forced' },
-    { write: '<=>', rkind: 'main',   lkind: 'main'   }
-  ];
+describe('paddings', async it => {
 
   const pads = ['', ' ', '\t', '\r', '\n', '\r\n', ' \r\n\t\n\n \n '];
 
