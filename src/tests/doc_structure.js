@@ -11,8 +11,8 @@ const fslp = require('../../build/fslp.js');
 
 describe('can run specs', async it => {
 
-  it('can parse bob', t => t.is('bob', fslp.parse('bob') ));
-  it('can parse joe', t => t.is('joe', fslp.parse('joe') ));
+  it('can parse a->b;', t => t.is('bob', fslp.parse('a->b;') ));
+  it('can parse a=>b;', t => t.is('joe', fslp.parse('a=>b;') ));
 
   it('cannot parse dan', t => t.throws( () => fslp.parse('dan')  ));
   it('cannot parse dan', t => t.throws( () => fslp.parse('bab')  ));
