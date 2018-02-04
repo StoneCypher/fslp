@@ -1,6 +1,6 @@
 {
   "name": "fslp",
-  "version": "0.15.9",
+  "version": "0.15.10",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "mk_parser": "node src/build/gen_peg.js",
     "rollup": "rollup -c",
     "minify": "uglifyjs ./build/fslp.js -o ./build/fslp.min.js --compress",
-    "eslint": "echo todo",
+    "eslint": "eslint src/js/*.js",
     "grammkit": "echo todo",
     "documentationjs": "echo todo",
     "doc": "npm run grammkit && npm run documentationjs",
