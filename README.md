@@ -85,17 +85,11 @@ The most common notation for transitions are arrows, pointing left, right, or bo
 
 Arrow direction tells the machine which directions are permitted.  The machine will resist any transition that hasn't been explicitly allowed.
 
-
-
-#### Either direction
-
 So by example, a light switch may go freely between on and off:
 
 ```fsl
 On <-> Off;
 ```
-
-<img style="height: 400px;" src="src/site/assets/on_off%20and%20alive_dead.png"/>
 
 However, one does not return from death.
 
@@ -103,13 +97,84 @@ However, one does not return from death.
 Alive -> Dead;
 ```
 
-These are both valid, complete state machines.  They can be executed, and rendered.  
+<img height="140" src="src/site/assets/on_off%20and%20alive_dead.png"/>
+
+These are both valid, complete state machines.  They can be executed, and rendered (as above.)
 
 Each of these state machines has two `state`s.  By example, the light switch has the state `On` and the state `Off`.
 
 The on/off state machine has ***two*** transitions (that arrow draws one in each direction, not one that goes both directions; this difference can be important when attaching events.)  By contrast, the survival machine has only one transition.
 
 Notice that [graph explorer](https://stonecypher.github.io/jssm-viz-demo/graph_explorer.html) has colored the `Dead` state red.  That's because the state is "terminal" - that machine cannot make any changes once it has reached that state.  There is no escape from being `Dead`.
+
+
+
+### Arrow chaining
+
+Because states are often successive, it can be a time saver to chain arrows: `Infant -> Child -> Adult -> Senior;`
+
+This is also a convenient way to write loops: `Spring -> Summer -> Autumn -> Winter -> Spring;`
+
+Chains do not need to be unidirectional: `solid -> liquid <-> gas <- plasma;`
+
+
+
+### Transition kind
+
+Arrows also determine the `transition kind`.  Something may be a `main transition`, a `legal transition`, or a `forced transition`.
+
+The arrows above are legal transitions.  However, if you tell your machine more, it can do a better job in rendering, in statistics gathering, and in protecting you from mistakes.
+
+Also, code written with sparing use of main transitions can help a reader understand what is meant to be the primary path of the machine.  When you consider all the side jobs an ATM has to do, this can actually be quite important for a reader with no context.
+
+#### Legal transitions
+
+Most transitions will be `legal transitions`.
+
+`Legal transitions` are written with a hyphen: 
+
+```fsl
+Thing -> OtherThing;
+```
+
+#### Main transitions
+
+A few transitions should be `main transitions`, which tell the machine which transitions to expect as the primary course for an `instance`.
+
+We will also write these state names with quotation marks, to let us use spaces.
+
+`Main transitions` are written with an equals sign:
+
+```fsl
+"Primary Thing" => "Other Major Stuff";
+```
+
+#### Forced transitions
+
+If there's a thing that an `instance` generally should not do, write it with a `forced transition`.  They're called `forced transitions` because, much like with the `-f` flag on formatting a disk, you must force the machine to follow them; otherwise it will say no.  `Forced transitions` are meant to model things that are generally the wrong thing to do, or are destructive when used, such as destroying an asset, deleting an account.
+
+`Forced transitions` are written with a tilde.
+
+```fsl
+"Normal Operation" ~> "Self Destruct".
+```
+
+
+### Target lists
+
+Now, in the above example, presumably the implied spaceship would have other states, such as **Docked**, **"Red Alert"**, and **Quarantine**. Writing out giant repetitive lists of transitions is tedious and error prone, so we offer `target lists`.
+
+```
+["Normal Operation" Landed Docked "Red Alert" Quarantine Flag Capital Escort Dark Scuttled] ~> "Self Destruct".
+```
+
+This explicitly writes that all of those states may be forced-transitioned to **"Self Destruct"**.
+
+
+
+### Cycles
+
+A denser notation for loops is `cycle`s, and `cycle`s come with some advantages.  They are arguably slightly less readable, but, attributes attached to an edge are attached to all edges in the cycle.
 
 
 
