@@ -34,12 +34,12 @@ These are the current language features in the language design.  The parser will
 
 ## The language basics and terminology.
 
-* `Machine`s
+* `Machine`
   * A `machine` is a design.  
   * A complete piece of code describes a `machine`.  
   * "A three color traffic signal" is a `machine`.
 
-* `Instance`s 
+* `Instance`
   * An `instance` is a single case of a `machine`.  
   * An `instance` is a `machine` plus a `state`, possibly `data`, and possibly `hooks`.  
   * "The three color signal at 5th and brady" is an `instance`.
@@ -95,7 +95,7 @@ So by example, a light switch may go freely between on and off:
 On <-> Off;
 ```
 
-<div><img style="height: 400px;" src="src/assets/on_off%20and%20alive_dead.png"/></div>
+<img style="height: 400px;" src="src/site/assets/on_off%20and%20alive_dead.png"/>
 
 However, one does not return from death.
 
