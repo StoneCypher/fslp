@@ -15,7 +15,7 @@
     "grammkit": "cd docs && cd grammar && grammkit -t md ../../build/fsl-peg.pegjs && cd .. && cd ..",
     "doc": "npm run grammkit",
     "site": "cp -r ./src/site/* ./docs",
-    "make": "npm run clean && npm run make_peg && npm run mk_parser && npm run rollup && npm run minify",
+    "make": "npm run clean && npm run make_peg && npm run mk_parser && npm run rollup",
     "build": "npm run make && npm run test && npm run doc && npm run site",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "travis": "npm run coverage",
