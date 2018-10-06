@@ -1,6 +1,6 @@
 {
   "name": "fslp",
-  "version": "0.15.16",
+  "version": "0.15.18",
   "description": "Finite State Language reference parser",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "grammkit": "cd docs && cd grammar && grammkit -t md ../../build/fsl-peg.pegjs && cd .. && cd ..",
     "doc": "npm run grammkit",
     "site": "cp -r ./src/site/* ./docs",
-    "make": "npm run clean && npm run make_peg && npm run mk_parser && npm run rollup && npm run minify",
+    "make": "npm run clean && npm run make_peg && npm run mk_parser && npm run rollup",
     "build": "npm run make && npm run test && npm run doc && npm run site",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "travis": "npm run coverage",
@@ -58,7 +58,6 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "concat": "^1.0.3",
     "coveralls": "^3.0.2",
@@ -73,13 +72,13 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-unicorn": "^3.0.1",
-    "grammkit": "^0.6.1",
+    "grammkit": "^0.6.2",
     "nyc": "^13.0.1",
     "pegjs": "^0.10.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.54.1",
-    "rollup-plugin-commonjs": "^9.1.8",
-    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
     "uglify-es": "^3.3.9"
   }
 }
