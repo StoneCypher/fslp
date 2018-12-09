@@ -2,6 +2,8 @@
 
 Reference `fsl` parser in Typescripted Javascript, built on [pegjs](https://pegjs.org/).
 
+If you're looking to run finite state machines in practice, you probably want [jssm](https://github.com/StoneCypher/jssm) instead.  This is a reference language parser.
+
 
 
 ## Purpose
