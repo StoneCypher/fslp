@@ -1,3 +1,11 @@
+This was the `fsl` reference parser.  However, as [jssm](https://github.com/StoneCypher/jssm)'s test cases improve, it becomes increasingly clear that there's no reason to maintain two parsers.
+
+***As such, JSSM is now the official FSL reference parser.***
+
+This repo is archived.
+
+
+
 # fslp
 
 Reference `fsl` parser in Typescripted Javascript, built on [pegjs](https://pegjs.org/).
